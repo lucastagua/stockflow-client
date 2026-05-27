@@ -21,3 +21,12 @@ export interface PagedResponse<T> {
   totalPages: number;
   data: T[];
 }
+
+export interface ProductFilters {
+  pageNumber: number;
+  pageSize: number;
+  search?: string;
+  categoryId?: number;
+  isActive?: boolean;
+  lowStock?: boolean;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { axiosClient } from "../api/axiosClient";
-import type { PagedResponse, Product } from "../types/product";
+import { getProducts } from "../api/productsApi";
+import type { Product } from "../types/product";
 
 export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,20 +17,15 @@ export function ProductsPage() {
         setIsLoading(true);
         setError("");
 
-        const response = await axiosClient.get<PagedResponse<Product>>(
-          "/Products",
-          {
-            params: {
-              pageNumber,
-              pageSize: 10,
-              search: search || undefined,
-              lowStock: lowStock || undefined,
-            },
-          }
-        );
+        const data = await getProducts({
+          pageNumber,
+          pageSize: 10,
+          search,
+          lowStock,
+        });
 
-        setProducts(response.data.data);
-        setTotalPages(response.data.totalPages);
+        setProducts(data.data);
+        setTotalPages(data.totalPages);
       } catch {
         setError("Could not load products.");
       } finally {
