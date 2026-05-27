@@ -196,3 +196,52 @@ td {
   background: #9ca3af;
   cursor: not-allowed;
 }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.summary-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.summary-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.summary-card-title {
+  margin: 0 0 8px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.summary-card h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.summary-card-description {
+  margin: 12px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.summary-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff6ff;
+  color: #2563eb;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}

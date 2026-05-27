@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { axiosClient } from "../api/axiosClient";
 import type { DashboardSummary } from "../types/dashboard";
+import { Boxes, AlertTriangle, CheckCircle, DollarSign } from "lucide-react";
+import { SummaryCard } from "../components/SummaryCard";
 
 export function DashboardPage() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -41,26 +43,34 @@ export function DashboardPage() {
     <main>
       <h1>StockFlow Dashboard</h1>
 
-      <section>
-        <div>
-          <h3>Total Products</h3>
-          <p>{summary.totalProducts}</p>
-        </div>
+      <section className="summary-grid">
+        <SummaryCard
+          title="Total Products"
+          value={summary.totalProducts}
+          description="Registered products"
+          icon={<Boxes size={22} />}
+        />
 
-        <div>
-          <h3>Active Products</h3>
-          <p>{summary.activeProducts}</p>
-        </div>
+        <SummaryCard
+          title="Active Products"
+          value={summary.activeProducts}
+          description="Currently available"
+          icon={<CheckCircle size={22} />}
+        />
 
-        <div>
-          <h3>Low Stock Products</h3>
-          <p>{summary.lowStockProducts}</p>
-        </div>
+        <SummaryCard
+          title="Low Stock"
+          value={summary.lowStockProducts}
+          description="Need attention"
+          icon={<AlertTriangle size={22} />}
+        />
 
-        <div>
-          <h3>Total Revenue</h3>
-          <p>${summary.totalRevenueArs.toLocaleString("es-AR")}</p>
-        </div>
+        <SummaryCard
+          title="Revenue"
+          value={`$${summary.totalRevenueArs.toLocaleString("es-AR")}`}
+          description="Completed sales"
+          icon={<DollarSign size={22} />}
+        />
       </section>
 
       <section>
