@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
+  createProduct,
   deactivateProduct,
   getProducts,
   restoreProduct,
 } from "../api/productsApi";
 import type { Product } from "../types/product";
+import { getActiveCategories } from "../api/categoriesApi";
+import type { Category } from "../types/category";
+
 
 export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -14,8 +18,20 @@ export function ProductsPage() {
   const [lowStock, setLowStock] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    brand: "",
+    sku: "",
+    costUsd: 0,
+    profitMarginPercentage: 30,
+    stock: 0,
+    minimumStock: 3,
+    categoryId: 0,
+  });
 
-  async function fetchProducts() {
+  const fetchProducts = useCallback(async () => {
   try {
     setIsLoading(true);
     setError("");
@@ -34,12 +50,24 @@ export function ProductsPage() {
   } finally {
     setIsLoading(false);
   }
-}
+}, [pageNumber, search, lowStock]);
 
-  useEffect(() => {
+useEffect(() => {
+  fetchProducts();
+}, [fetchProducts]);
 
-    fetchProducts();
-  }, [pageNumber, search, lowStock]);
+useEffect(() => {
+  async function fetchCategories() {
+    try {
+      const data = await getActiveCategories();
+      setCategories(data);
+    } catch {
+      setError("Could not load categories.");
+    }
+  }
+
+  fetchCategories();
+}, []);
 
   async function handleDeactivateProduct(productId: number) {
   const confirmed = window.confirm(
@@ -65,6 +93,48 @@ async function handleRestoreProduct(productId: number) {
   }
 }
 
+async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+
+  if (newProduct.categoryId === 0) {
+    setError("Please select a category.");
+    return;
+  }
+
+  try {
+    setIsCreating(true);
+    setError("");
+
+    await createProduct({
+      name: newProduct.name,
+      brand: newProduct.brand || undefined,
+      sku: newProduct.sku || undefined,
+      costUsd: Number(newProduct.costUsd),
+      profitMarginPercentage: Number(newProduct.profitMarginPercentage),
+      stock: Number(newProduct.stock),
+      minimumStock: Number(newProduct.minimumStock),
+      categoryId: Number(newProduct.categoryId),
+    });
+
+    setNewProduct({
+      name: "",
+      brand: "",
+      sku: "",
+      costUsd: 0,
+      profitMarginPercentage: 30,
+      stock: 0,
+      minimumStock: 3,
+      categoryId: 0,
+    });
+
+    await fetchProducts();
+  } catch {
+    setError("Could not create product.");
+  } finally {
+    setIsCreating(false);
+  }
+}
+
   return (
     <div>
       <div className="page-header">
@@ -73,6 +143,145 @@ async function handleRestoreProduct(productId: number) {
           <p>Manage your product inventory, pricing and stock status.</p>
         </div>
       </div>
+
+      <form className="form-card" onSubmit={handleCreateProduct}>
+        <h2>Create Product</h2>
+
+        <div className="form-grid">
+          <label className="form-field">
+            <span>Name</span>
+            <input
+              type="text"
+              placeholder="Example: Mechanical Keyboard"
+              value={newProduct.name}
+              onChange={(event) =>
+                setNewProduct({ ...newProduct, name: event.target.value })
+              }
+              required
+            />
+          </label>
+
+          <label className="form-field">
+            <span>Brand</span>
+            <input
+              type="text"
+              placeholder="Example: Logitech"
+              value={newProduct.brand}
+              onChange={(event) =>
+                setNewProduct({ ...newProduct, brand: event.target.value })
+              }
+            />
+          </label>
+
+          <label className="form-field">
+            <span>SKU</span>
+            <input
+              type="text"
+              placeholder="Example: LOG-MOUSE-001"
+              value={newProduct.sku}
+              onChange={(event) =>
+                setNewProduct({ ...newProduct, sku: event.target.value })
+              }
+            />
+          </label>
+
+          <label className="form-field">
+            <span>Category</span>
+            <select
+              value={newProduct.categoryId}
+              onChange={(event) =>
+                setNewProduct({
+                  ...newProduct,
+                  categoryId: Number(event.target.value),
+                })
+              }
+              required
+            >
+              <option value={0}>Select category</option>
+
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="form-field">
+            <span>Cost USD</span>
+            <input
+              type="number"
+              placeholder="Example: 45"
+              value={newProduct.costUsd}
+              onChange={(event) =>
+                setNewProduct({
+                  ...newProduct,
+                  costUsd: Number(event.target.value),
+                })
+              }
+              min="0"
+              step="0.01"
+              required
+            />
+          </label>
+
+          <label className="form-field">
+            <span>Profit Margin %</span>
+            <input
+              type="number"
+              placeholder="Example: 35"
+              value={newProduct.profitMarginPercentage}
+              onChange={(event) =>
+                setNewProduct({
+                  ...newProduct,
+                  profitMarginPercentage: Number(event.target.value),
+                })
+              }
+              min="0"
+              step="0.01"
+              required
+            />
+          </label>
+
+          <label className="form-field">
+            <span>Initial Stock</span>
+            <input
+              type="number"
+              placeholder="Example: 10"
+              value={newProduct.stock}
+              onChange={(event) =>
+                setNewProduct({
+                  ...newProduct,
+                  stock: Number(event.target.value),
+                })
+              }
+              min="0"
+              required
+            />
+          </label>
+
+          <label className="form-field">
+            <span>Minimum Stock</span>
+            <input
+              type="number"
+              placeholder="Example: 3"
+              value={newProduct.minimumStock}
+              onChange={(event) =>
+                setNewProduct({
+                  ...newProduct,
+                  minimumStock: Number(event.target.value),
+                })
+              }
+              min="0"
+              required
+            />
+          </label>
+        </div>
+
+        <button className="button button-primary" type="submit" disabled={isCreating}>
+          {isCreating ? "Creating..." : "Create Product"}
+        </button>
+      </form>
 
       <div className="toolbar">
         <input

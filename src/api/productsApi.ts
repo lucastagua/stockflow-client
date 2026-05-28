@@ -1,5 +1,10 @@
 import { axiosClient } from "./axiosClient";
-import type { PagedResponse, Product, ProductFilters } from "../types/product";
+import type {
+  CreateProductRequest,
+  PagedResponse,
+  Product,
+  ProductFilters,
+} from "../types/product";
 
 export async function getProducts(filters: ProductFilters) {
   const response = await axiosClient.get<PagedResponse<Product>>("/Products", {
@@ -12,6 +17,12 @@ export async function getProducts(filters: ProductFilters) {
       lowStock: filters.lowStock || undefined,
     },
   });
+
+  return response.data;
+}
+
+export async function createProduct(product: CreateProductRequest) {
+  const response = await axiosClient.post<Product>("/Products", product);
 
   return response.data;
 }
