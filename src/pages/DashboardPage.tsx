@@ -3,6 +3,8 @@ import { axiosClient } from "../api/axiosClient";
 import type { DashboardSummary } from "../types/dashboard";
 import { Boxes, AlertTriangle, CheckCircle, DollarSign } from "lucide-react";
 import { SummaryCard } from "../components/SummaryCard";
+import { RecentSalesList } from "../components/RecentSalesList";
+import { RecentStockMovementsList } from "../components/RecentStockMovementsList";
 
 export function DashboardPage() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -74,36 +76,10 @@ export function DashboardPage() {
       </section>
 
       <section>
-        <h2>Recent Sales</h2>
-
-        {summary.recentSales.length === 0 ? (
-          <p>No recent sales.</p>
-        ) : (
-          <ul>
-            {summary.recentSales.map((sale) => (
-              <li key={sale.id}>
-                Sale #{sale.id} - ${sale.totalAmountArs.toLocaleString("es-AR")}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <h2>Recent Stock Movements</h2>
-
-        {summary.recentStockMovements.length === 0 ? (
-          <p>No recent stock movements.</p>
-        ) : (
-          <ul>
-            {summary.recentStockMovements.map((movement) => (
-              <li key={movement.id}>
-                {movement.productName} - {movement.previousStock} →{" "}
-                {movement.newStock}
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="dashboard-columns">
+          <RecentSalesList sales={summary.recentSales} />
+          <RecentStockMovementsList movements={summary.recentStockMovements} />
+        </div>
       </section>
     </main>
   );

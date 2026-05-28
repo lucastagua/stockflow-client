@@ -245,3 +245,57 @@ td {
   height: 42px;
   border-radius: 12px;
 }
+
+.dashboard-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.dashboard-section h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.section-header {
+  margin-bottom: 12px;
+}
+
+.list-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.list-row:last-child {
+  border-bottom: none;
+}
+
+.list-row p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.list-row-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.empty-message {
+  color: #6b7280;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 16px;
+}
