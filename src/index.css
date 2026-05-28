@@ -381,3 +381,12 @@ td {
   font-weight: 600;
   color: #374151;
 }
+
+.error-message {
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}

@@ -8,6 +8,7 @@ import {
 import type { Product } from "../types/product";
 import { getActiveCategories } from "../api/categoriesApi";
 import type { Category } from "../types/category";
+import { getApiErrorMessage } from "../api/apiError";
 
 
 export function ProductsPage() {
@@ -79,8 +80,8 @@ useEffect(() => {
   try {
     await deactivateProduct(productId);
     await fetchProducts();
-  } catch {
-    setError("Could not deactivate product.");
+  } catch (error) {
+    setError(getApiErrorMessage(error, "Could not deactivate product."));
   }
 }
 
@@ -88,8 +89,8 @@ async function handleRestoreProduct(productId: number) {
   try {
     await restoreProduct(productId);
     await fetchProducts();
-  } catch {
-    setError("Could not restore product.");
+  } catch (error) {
+    setError(getApiErrorMessage(error, "Could not restore product."));
   }
 }
 
@@ -128,8 +129,8 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
     });
 
     await fetchProducts();
-  } catch {
-    setError("Could not create product.");
+  } catch (error) {
+    setError(getApiErrorMessage(error, "Could not create product."));
   } finally {
     setIsCreating(false);
   }
@@ -281,6 +282,9 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
         <button className="button button-primary" type="submit" disabled={isCreating}>
           {isCreating ? "Creating..." : "Create Product"}
         </button>
+
+        {error && <p className="error-message">{error}</p>}
+
       </form>
 
       <div className="toolbar">
@@ -308,8 +312,6 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
       </div>
 
       {isLoading && <p>Loading products...</p>}
-
-      {error && <p className="error-message">{error}</p>}
 
       {!isLoading && !error && (
         <>
