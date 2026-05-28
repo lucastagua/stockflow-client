@@ -21,6 +21,8 @@ export function ProductsPage() {
   const [error, setError] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [isCreating, setIsCreating] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(0);
+  const [selectedStatus, setSelectedStatus] = useState<"all" | "active" | "inactive">("all");
   const [newProduct, setNewProduct] = useState({
     name: "",
     brand: "",
@@ -42,6 +44,11 @@ export function ProductsPage() {
       pageSize: 10,
       search,
       lowStock,
+      categoryId: selectedCategoryId === 0 ? undefined : selectedCategoryId,
+      isActive:
+        selectedStatus === "all"
+          ? undefined
+          : selectedStatus === "active",
     });
 
     setProducts(data.data);
@@ -51,7 +58,7 @@ export function ProductsPage() {
   } finally {
     setIsLoading(false);
   }
-}, [pageNumber, search, lowStock]);
+}, [pageNumber, search, lowStock, selectedCategoryId, selectedStatus]);
 
 useEffect(() => {
   fetchProducts();
@@ -297,6 +304,34 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
             setPageNumber(1);
           }}
         />
+
+        <select
+          value={selectedCategoryId}
+          onChange={(event) => {
+            setSelectedCategoryId(Number(event.target.value));
+            setPageNumber(1);
+          }}
+        >
+          <option value={0}>All categories</option>
+
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={selectedStatus}
+          onChange={(event) => {
+            setSelectedStatus(event.target.value as "all" | "active" | "inactive");
+            setPageNumber(1);
+          }}
+        >
+          <option value="all">All statuses</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
 
         <label className="checkbox-label">
           <input

@@ -98,12 +98,14 @@ main h1,
   margin-bottom: 20px;
 }
 
-.toolbar input[type="text"] {
-  width: 320px;
+.toolbar input[type="text"],
+.toolbar select {
+  width: 300px;
   padding: 10px 12px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
   font-size: 14px;
+  background: #ffffff;
 }
 
 .checkbox-label {
