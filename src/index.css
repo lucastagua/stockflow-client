@@ -392,3 +392,7 @@ td {
   border-radius: 10px;
   margin-bottom: 16px;
 }
+
+.form-grid-compact {
+  grid-template-columns: minmax(0, 360px);
+}

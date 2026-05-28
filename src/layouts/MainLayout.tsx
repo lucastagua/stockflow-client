@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { BarChart3, Boxes, ReceiptText, Shuffle } from "lucide-react";
+import { BarChart3, Boxes, FolderTree, ReceiptText, Shuffle } from "lucide-react";
 
 export function MainLayout() {
   return (
@@ -14,6 +14,11 @@ export function MainLayout() {
           <NavLink to="/" end>
             <BarChart3 size={18} />
             Dashboard
+          </NavLink>
+
+          <NavLink to="/categories">
+            <FolderTree size={18} />
+            Categories
           </NavLink>
 
           <NavLink to="/products">
