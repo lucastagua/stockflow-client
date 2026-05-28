@@ -15,3 +15,11 @@ export async function getProducts(filters: ProductFilters) {
 
   return response.data;
 }
+
+export async function deactivateProduct(productId: number) {
+  await axiosClient.delete(`/Products/${productId}`);
+}
+
+export async function restoreProduct(productId: number) {
+  await axiosClient.patch(`/Products/${productId}/restore`);
+}

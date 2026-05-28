@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../api/productsApi";
+import {
+  deactivateProduct,
+  getProducts,
+  restoreProduct,
+} from "../api/productsApi";
 import type { Product } from "../types/product";
 
 export function ProductsPage() {
@@ -11,30 +15,55 @@ export function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
+  async function fetchProducts() {
+  try {
+    setIsLoading(true);
+    setError("");
+
+    const data = await getProducts({
+      pageNumber,
+      pageSize: 10,
+      search,
+      lowStock,
+    });
+
+    setProducts(data.data);
+    setTotalPages(data.totalPages);
+  } catch {
+    setError("Could not load products.");
+  } finally {
+    setIsLoading(false);
+  }
+}
+
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        setIsLoading(true);
-        setError("");
-
-        const data = await getProducts({
-          pageNumber,
-          pageSize: 10,
-          search,
-          lowStock,
-        });
-
-        setProducts(data.data);
-        setTotalPages(data.totalPages);
-      } catch {
-        setError("Could not load products.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
 
     fetchProducts();
   }, [pageNumber, search, lowStock]);
+
+  async function handleDeactivateProduct(productId: number) {
+  const confirmed = window.confirm(
+    "Are you sure you want to deactivate this product?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await deactivateProduct(productId);
+    await fetchProducts();
+  } catch {
+    setError("Could not deactivate product.");
+  }
+}
+
+async function handleRestoreProduct(productId: number) {
+  try {
+    await restoreProduct(productId);
+    await fetchProducts();
+  } catch {
+    setError("Could not restore product.");
+  }
+}
 
   return (
     <div>
@@ -88,13 +117,14 @@ export function ProductsPage() {
                   <th>Margin</th>
                   <th>Price ARS</th>
                   <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
 
               <tbody>
                 {products.length === 0 ? (
                   <tr>
-                    <td colSpan={9}>No products found.</td>
+                    <td colSpan={10}>No products found.</td>
                   </tr>
                 ) : (
                   products.map((product) => (
@@ -129,6 +159,23 @@ export function ProductsPage() {
                         >
                           {product.isActive ? "Active" : "Inactive"}
                         </span>
+                      </td>
+                      <td>
+                        {product.isActive ? (
+                          <button
+                            className="button button-danger"
+                            onClick={() => handleDeactivateProduct(product.id)}
+                          >
+                            Deactivate
+                          </button>
+                        ) : (
+                          <button
+                            className="button button-secondary"
+                            onClick={() => handleRestoreProduct(product.id)}
+                          >
+                            Restore
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))

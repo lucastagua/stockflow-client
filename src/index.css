@@ -299,3 +299,30 @@ td {
   padding: 16px;
   border-radius: 16px;
 }
+
+.button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button-danger {
+  background: #ffa9a9;
+  color: #991b1b;
+}
+
+.button-danger:hover {
+  background: #fecaca;
+}
+
+.button-secondary {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.button-secondary:hover {
+  background: #d1d5db;
+}
