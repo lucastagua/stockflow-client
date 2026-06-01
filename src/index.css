@@ -412,3 +412,35 @@ td {
   color: #6b7280;
   font-size: 13px;
 }
+
+.form-grid-sale {
+  grid-template-columns: 2fr 160px 140px;
+  align-items: end;
+}
+
+.form-actions-inline {
+  display: flex;
+  align-items: end;
+}
+
+.sale-items-preview {
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sale-items-preview h3 {
+  margin: 0;
+  padding: 12px 14px;
+  background: #f9fafb;
+  font-size: 15px;
+}
+
+.sale-item-preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-top: 1px solid #e5e7eb;
+}

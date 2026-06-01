@@ -31,3 +31,12 @@ export interface SaleFilters {
   pageNumber: number;
   pageSize: number;
 }
+
+export interface CreateSaleItemRequest {
+  productId: number;
+  quantity: number;
+}
+
+export interface CreateSaleRequest {
+  items: CreateSaleItemRequest[];
+}
