@@ -5,6 +5,15 @@ import type {
   Product,
   ProductFilters,
 } from "../types/product";
+import type { RecalculatePricesResponse } from "../types/exchangeRate";
+
+export async function recalculateProductPrices() {
+  const response = await axiosClient.post<RecalculatePricesResponse>(
+    "/Products/recalculate-prices"
+  );
+
+  return response.data;
+}
 
 export async function getProducts(filters: ProductFilters) {
   const response = await axiosClient.get<PagedResponse<Product>>("/Products", {

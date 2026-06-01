@@ -1,5 +1,12 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { BarChart3, Boxes, FolderTree, ReceiptText, Shuffle } from "lucide-react";
+import {
+  BarChart3,
+  Boxes,
+  DollarSign,
+  FolderTree,
+  ReceiptText,
+  Shuffle,
+} from "lucide-react";
 
 export function MainLayout() {
   return (
@@ -24,6 +31,11 @@ export function MainLayout() {
           <NavLink to="/products">
             <Boxes size={18} />
             Products
+          </NavLink>
+
+          <NavLink to="/exchange-rates">
+            <DollarSign size={18} />
+            Exchange Rates
           </NavLink>
 
           <NavLink to="/sales">

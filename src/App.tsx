@@ -5,6 +5,7 @@ import { ProductsPage } from "./pages/ProductsPage";
 import { SalesPage } from "./pages/SalesPage";
 import { StockMovementsPage } from "./pages/StockMovementsPage";
 import { CategoriesPage } from "./pages/CategoriesPage";
+import { ExchangeRatesPage } from "./pages/ExchangeRatesPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/exchange-rates" element={<ExchangeRatesPage />} />
           <Route path="/sales" element={<SalesPage />} />
           <Route path="/stock-movements" element={<StockMovementsPage />} />
           <Route path="/categories" element={<CategoriesPage />} />

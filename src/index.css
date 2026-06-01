@@ -444,3 +444,16 @@ td {
   padding: 10px 14px;
   border-top: 1px solid #e5e7eb;
 }
+
+.summary-grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.success-message {
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
