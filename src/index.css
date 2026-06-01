@@ -396,3 +396,19 @@ td {
 .form-grid-compact {
   grid-template-columns: minmax(0, 360px);
 }
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.items-list span {
+  font-size: 13px;
+  color: #374151;
+}
+
+.muted-text {
+  color: #6b7280;
+  font-size: 13px;
+}
