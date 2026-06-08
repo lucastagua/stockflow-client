@@ -7,6 +7,7 @@ import type {
   StockMovement,
   StockMovementType,
 } from "../types/stockMovement";
+import { PageHeader } from "../components/PageHeader";
 
 function getMovementTypeLabel(type: StockMovementType) {
   if (type === 1) return "In";
@@ -94,12 +95,10 @@ export function StockMovementsPage() {
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Stock Movements</h1>
-          <p>Review stock entries, exits and manual adjustments.</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Stock Movements"
+        description="Review stock entries, exits and manual adjustments."
+      />
 
       <div className="toolbar">
         <select

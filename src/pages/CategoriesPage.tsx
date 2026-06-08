@@ -7,6 +7,7 @@ import {
 } from "../api/categoriesApi";
 import { getApiErrorMessage } from "../api/apiError";
 import type { Category } from "../types/category";
+import { PageHeader } from "../components/PageHeader";
 
 export function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -91,12 +92,10 @@ export function CategoriesPage() {
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Categories</h1>
-          <p>Manage product categories used across your inventory.</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Categories"
+        description="Manage product categories used across your inventory."
+      />
 
       <form className="form-card" onSubmit={handleCreateCategory}>
         <h2>Create Category</h2>

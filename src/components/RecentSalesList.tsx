@@ -1,4 +1,5 @@
 import type { RecentSale } from "../types/dashboard";
+import { EmptyState } from "../components/EmptyState";
 
 interface RecentSalesListProps {
   sales: RecentSale[];
@@ -19,7 +20,7 @@ export function RecentSalesList({ sales }: RecentSalesListProps) {
       </div>
 
       {sales.length === 0 ? (
-        <p className="empty-message">No recent sales.</p>
+        <EmptyState message="No recent sales." />
       ) : (
         <div className="list-card">
           {sales.map((sale) => (

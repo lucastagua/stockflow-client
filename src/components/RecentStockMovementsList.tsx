@@ -1,4 +1,5 @@
 import type { RecentStockMovement } from "../types/dashboard";
+import { EmptyState } from "./EmptyState";
 
 interface RecentStockMovementsListProps {
   movements: RecentStockMovement[];
@@ -22,7 +23,7 @@ export function RecentStockMovementsList({
       </div>
 
       {movements.length === 0 ? (
-        <p className="empty-message">No recent stock movements.</p>
+        <EmptyState message="No recent sales." />
       ) : (
         <div className="list-card">
           {movements.map((movement) => (

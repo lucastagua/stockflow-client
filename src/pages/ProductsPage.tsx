@@ -9,6 +9,7 @@ import type { Product } from "../types/product";
 import { getActiveCategories } from "../api/categoriesApi";
 import type { Category } from "../types/category";
 import { getApiErrorMessage } from "../api/apiError";
+import { PageHeader } from "../components/PageHeader";
 
 
 export function ProductsPage() {
@@ -145,12 +146,10 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Products</h1>
-          <p>Manage your product inventory, pricing and stock status.</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Products"
+        description="Manage your product inventory, pricing and stock status."
+      />
 
       <form className="form-card" onSubmit={handleCreateProduct}>
         <h2>Create Product</h2>
@@ -451,6 +450,7 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
           </div>
         </>
       )}
+      
     </div>
   );
 }

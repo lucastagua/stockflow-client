@@ -7,6 +7,7 @@ import {
 import { getApiErrorMessage } from "../api/apiError";
 import { recalculateProductPrices } from "../api/productsApi";
 import type { ExchangeRate } from "../types/exchangeRate";
+import { PageHeader } from "../components/PageHeader";
 
 export function ExchangeRatesPage() {
   const [rates, setRates] = useState<ExchangeRate[]>([]);
@@ -96,12 +97,10 @@ export function ExchangeRatesPage() {
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Exchange Rates</h1>
-          <p>Manage exchange rates used for product price calculation.</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Exchange Rates"
+        description="Manage exchange rates used for product price calculation."
+      />
 
       {error && <p className="error-message">{error}</p>}
 

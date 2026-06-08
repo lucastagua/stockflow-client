@@ -4,6 +4,7 @@ import { getApiErrorMessage } from "../api/apiError";
 import type { Sale, SaleStatus } from "../types/sale";
 import { getProducts } from "../api/productsApi";
 import type { Product } from "../types/product";
+import { PageHeader } from "../components/PageHeader";
 
 function getSaleStatusLabel(status: SaleStatus) {
   if (status === 1) return "Completed";
@@ -186,77 +187,75 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Sales</h1>
-          <p>Review sales, filter by status and cancel transactions when needed.</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Sales"
+        description="Review sales, filter by status and cancel transactions when needed."
+      />
 
       <form className="form-card" onSubmit={handleCreateSale}>
-  <h2>Create Sale</h2>
+        <h2>Create Sale</h2>
 
-  <div className="form-grid form-grid-sale">
-    <label className="form-field">
-      <span>Product</span>
-      <select
-        value={selectedProductId}
-        onChange={(event) => setSelectedProductId(Number(event.target.value))}
-      >
-        <option value={0}>Select product</option>
+        <div className="form-grid form-grid-sale">
+          <label className="form-field">
+            <span>Product</span>
+            <select
+              value={selectedProductId}
+              onChange={(event) => setSelectedProductId(Number(event.target.value))}
+            >
+              <option value={0}>Select product</option>
 
-        {products.map((product) => (
-          <option key={product.id} value={product.id}>
-            {product.name} - Stock: {product.stock} - $
-            {product.priceArs.toLocaleString("es-AR")}
-          </option>
-        ))}
-      </select>
-    </label>
+              {products.map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name} - Stock: {product.stock} - $
+                  {product.priceArs.toLocaleString("es-AR")}
+                </option>
+              ))}
+            </select>
+          </label>
 
-    <label className="form-field">
-      <span>Quantity</span>
-      <input
-        type="number"
-        min="1"
-        value={quantity}
-        onChange={(event) => setQuantity(Number(event.target.value))}
-      />
-    </label>
+          <label className="form-field">
+            <span>Quantity</span>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(event) => setQuantity(Number(event.target.value))}
+            />
+          </label>
 
-    <div className="form-actions-inline">
-      <button type="button" className="button button-secondary" onClick={handleAddSaleItem}>
-        Add Item
-      </button>
-    </div>
-  </div>
-
-  {saleItems.length > 0 && (
-    <div className="sale-items-preview">
-      <h3>Sale Items</h3>
-
-      {saleItems.map((item) => (
-        <div key={item.productId} className="sale-item-preview-row">
-          <span>
-            {item.productName} x{item.quantity}
-          </span>
-
-          <button
-            type="button"
-            className="button button-danger"
-            onClick={() => handleRemoveSaleItem(item.productId)}
-          >
-            Remove
-          </button>
+          <div className="form-actions-inline">
+            <button type="button" className="button button-secondary" onClick={handleAddSaleItem}>
+              Add Item
+            </button>
+          </div>
         </div>
-      ))}
-    </div>
-  )}
 
-  <button className="button button-primary" type="submit" disabled={isCreating}>
-    {isCreating ? "Creating..." : "Create Sale"}
-  </button>
-</form>
+        {saleItems.length > 0 && (
+          <div className="sale-items-preview">
+            <h3>Sale Items</h3>
+
+            {saleItems.map((item) => (
+              <div key={item.productId} className="sale-item-preview-row">
+                <span>
+                  {item.productName} x{item.quantity}
+                </span>
+
+                <button
+                  type="button"
+                  className="button button-danger"
+                  onClick={() => handleRemoveSaleItem(item.productId)}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <button className="button button-primary" type="submit" disabled={isCreating}>
+          {isCreating ? "Creating..." : "Create Sale"}
+        </button>
+      </form>
 
       <div className="toolbar">
         <select
