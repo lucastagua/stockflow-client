@@ -8,6 +8,8 @@ import { getApiErrorMessage } from "../api/apiError";
 import { recalculateProductPrices } from "../api/productsApi";
 import type { ExchangeRate } from "../types/exchangeRate";
 import { PageHeader } from "../components/PageHeader";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { LoadingState } from "../components/LoadingState";
 
 export function ExchangeRatesPage() {
   const [rates, setRates] = useState<ExchangeRate[]>([]);
@@ -102,7 +104,7 @@ export function ExchangeRatesPage() {
         description="Manage exchange rates used for product price calculation."
       />
 
-      {error && <p className="error-message">{error}</p>}
+      <ErrorMessage message={error} />
 
       {successMessage && <p className="success-message">{successMessage}</p>}
 
@@ -163,7 +165,7 @@ export function ExchangeRatesPage() {
       </form>
 
       {isLoading ? (
-        <p>Loading exchange rates...</p>
+        <LoadingState message="Loading exchange rates..." />
       ) : (
         <div className="table-card">
           <table>

@@ -5,6 +5,8 @@ import { Boxes, AlertTriangle, CheckCircle, DollarSign } from "lucide-react";
 import { SummaryCard } from "../components/SummaryCard";
 import { RecentSalesList } from "../components/RecentSalesList";
 import { RecentStockMovementsList } from "../components/RecentStockMovementsList";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { LoadingState } from "../components/LoadingState";
 
 export function DashboardPage() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -30,11 +32,11 @@ export function DashboardPage() {
   }, []);
 
   if (isLoading) {
-    return <p>Loading dashboard...</p>;
+    return <LoadingState message="Loading dashboard..." />;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <ErrorMessage message={error} />;
   }
 
   if (!summary) {

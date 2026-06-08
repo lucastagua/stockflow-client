@@ -8,6 +8,8 @@ import {
 import { getApiErrorMessage } from "../api/apiError";
 import type { Category } from "../types/category";
 import { PageHeader } from "../components/PageHeader";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { LoadingState } from "../components/LoadingState";
 
 export function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -138,10 +140,10 @@ export function CategoriesPage() {
         </select>
       </div>
 
-      {error && <p className="error-message">{error}</p>}
+      <ErrorMessage message={error} />
 
       {isLoading ? (
-        <p>Loading categories...</p>
+        <LoadingState message="Loading categories..." />
       ) : (
         <div className="table-card">
           <table>

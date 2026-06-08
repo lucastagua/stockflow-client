@@ -10,6 +10,8 @@ import { getActiveCategories } from "../api/categoriesApi";
 import type { Category } from "../types/category";
 import { getApiErrorMessage } from "../api/apiError";
 import { PageHeader } from "../components/PageHeader";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { LoadingState } from "../components/LoadingState";
 
 
 export function ProductsPage() {
@@ -289,7 +291,7 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
           {isCreating ? "Creating..." : "Create Product"}
         </button>
 
-        {error && <p className="error-message">{error}</p>}
+        <ErrorMessage message={error} />
 
       </form>
 
@@ -345,7 +347,7 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
         </label>
       </div>
 
-      {isLoading && <p>Loading products...</p>}
+      {isLoading && <LoadingState message="Loading products..." />}
 
       {!isLoading && !error && (
         <>

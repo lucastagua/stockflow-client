@@ -5,6 +5,8 @@ import type { Sale, SaleStatus } from "../types/sale";
 import { getProducts } from "../api/productsApi";
 import type { Product } from "../types/product";
 import { PageHeader } from "../components/PageHeader";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { LoadingState } from "../components/LoadingState";
 
 function getSaleStatusLabel(status: SaleStatus) {
   if (status === 1) return "Completed";
@@ -291,10 +293,10 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
         />
       </div>
 
-      {error && <p className="error-message">{error}</p>}
+      <ErrorMessage message={error} />
 
       {isLoading ? (
-        <p>Loading sales...</p>
+        <LoadingState message="Loading sales..." />
       ) : (
         <>
           <div className="table-card">
