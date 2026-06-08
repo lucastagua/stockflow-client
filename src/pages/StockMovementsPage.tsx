@@ -8,6 +8,9 @@ import type {
   StockMovementType,
 } from "../types/stockMovement";
 import { PageHeader } from "../components/PageHeader";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { LoadingState } from "../components/LoadingState";
+import { Pagination } from "../components/Pagination";
 
 function getMovementTypeLabel(type: StockMovementType) {
   if (type === 1) return "In";
@@ -151,10 +154,10 @@ export function StockMovementsPage() {
         />
       </div>
 
-      {error && <p className="error-message">{error}</p>}
+        <ErrorMessage message={error} />
 
       {isLoading ? (
-        <p>Loading stock movements...</p>
+        <LoadingState message="Loading stock movements..." />
       ) : (
         <>
           <div className="table-card">
@@ -201,25 +204,11 @@ export function StockMovementsPage() {
             </table>
           </div>
 
-          <div className="pagination">
-            <button
-              disabled={pageNumber === 1}
-              onClick={() => setPageNumber((current) => current - 1)}
-            >
-              Previous
-            </button>
-
-            <span>
-              Page {pageNumber} of {totalPages}
-            </span>
-
-            <button
-              disabled={pageNumber === totalPages}
-              onClick={() => setPageNumber((current) => current + 1)}
-            >
-              Next
-            </button>
-          </div>
+          <Pagination
+            pageNumber={pageNumber}
+            totalPages={totalPages}
+            onPageChange={setPageNumber}
+          />
         </>
       )}
     </div>

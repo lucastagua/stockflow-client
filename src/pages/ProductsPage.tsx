@@ -12,6 +12,7 @@ import { getApiErrorMessage } from "../api/apiError";
 import { PageHeader } from "../components/PageHeader";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
+import { Pagination } from "../components/Pagination";
 
 
 export function ProductsPage() {
@@ -431,25 +432,11 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
             </table>
           </div>
 
-          <div className="pagination">
-            <button
-              disabled={pageNumber === 1}
-              onClick={() => setPageNumber((current) => current - 1)}
-            >
-              Previous
-            </button>
-
-            <span>
-              Page {pageNumber} of {totalPages}
-            </span>
-
-            <button
-              disabled={pageNumber === totalPages}
-              onClick={() => setPageNumber((current) => current + 1)}
-            >
-              Next
-            </button>
-          </div>
+          <Pagination
+            pageNumber={pageNumber}
+            totalPages={totalPages}
+            onPageChange={setPageNumber}
+          />
         </>
       )}
       
