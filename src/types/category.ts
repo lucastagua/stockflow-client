@@ -14,3 +14,8 @@ export interface CategoryFilters {
   search?: string;
   isActive?: boolean;
 }
+
+export interface UpdateCategoryRequest {
+  name: string;
+  isActive: boolean;
+}

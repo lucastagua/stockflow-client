@@ -4,6 +4,7 @@ import {
   deactivateCategory,
   getCategories,
   restoreCategory,
+  updateCategory,
 } from "../api/categoriesApi";
 import { getApiErrorMessage } from "../api/apiError";
 import type { Category } from "../types/category";
@@ -18,6 +19,9 @@ export function CategoriesPage() {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+  const [editCategoryName, setEditCategoryName] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState("");
 
   const fetchCategories = useCallback(async () => {
@@ -63,6 +67,41 @@ export function CategoriesPage() {
       setError(getApiErrorMessage(error, "Could not create category."));
     } finally {
       setIsCreating(false);
+    }
+  }
+
+  function handleStartEditCategory(category: Category) {
+    setEditingCategoryId(category.id);
+    setEditCategoryName(category.name);
+    setError("");
+  }
+
+  function handleCancelEditCategory() {
+    setEditingCategoryId(null);
+    setEditCategoryName("");
+    setError("");
+  }
+
+  async function handleUpdateCategory(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (editingCategoryId === null) return;
+
+    try {
+      setIsUpdating(true);
+      setError("");
+
+      await updateCategory(editingCategoryId, {
+        name: editCategoryName,
+        isActive: true,
+      });
+
+      handleCancelEditCategory();
+      await fetchCategories();
+    } catch (error) {
+      setError(getApiErrorMessage(error, "Could not update category."));
+    } finally {
+      setIsUpdating(false);
     }
   }
 
@@ -119,6 +158,38 @@ export function CategoriesPage() {
           {isCreating ? "Creating..." : "Create Category"}
         </button>
       </form>
+
+      {editingCategoryId !== null && (
+        <form className="form-card" onSubmit={handleUpdateCategory}>
+          <h2>Edit Category</h2>
+
+          <div className="form-grid form-grid-compact">
+            <label className="form-field">
+              <span>Name</span>
+              <input
+                type="text"
+                value={editCategoryName}
+                onChange={(event) => setEditCategoryName(event.target.value)}
+                required
+              />
+            </label>
+          </div>
+
+          <div className="form-actions">
+            <button className="button button-primary" type="submit" disabled={isUpdating}>
+              {isUpdating ? "Saving..." : "Save Changes"}
+            </button>
+
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={handleCancelEditCategory}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
 
       <div className="toolbar">
         <input
@@ -180,21 +251,30 @@ export function CategoriesPage() {
                       {new Date(category.createdAt).toLocaleDateString("es-AR")}
                     </td>
                     <td>
-                      {category.isActive ? (
-                        <button
-                          className="button button-danger"
-                          onClick={() => handleDeactivateCategory(category.id)}
-                        >
-                          Deactivate
-                        </button>
-                      ) : (
+                      <div className="table-actions">
                         <button
                           className="button button-secondary"
-                          onClick={() => handleRestoreCategory(category.id)}
+                          onClick={() => handleStartEditCategory(category)}
                         >
-                          Restore
+                          Edit
                         </button>
-                      )}
+
+                        {category.isActive ? (
+                          <button
+                            className="button button-danger"
+                            onClick={() => handleDeactivateCategory(category.id)}
+                          >
+                            Deactivate
+                          </button>
+                        ) : (
+                          <button
+                            className="button button-secondary"
+                            onClick={() => handleRestoreCategory(category.id)}
+                          >
+                            Restore
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))

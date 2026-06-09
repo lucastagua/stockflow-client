@@ -1,5 +1,17 @@
 import { axiosClient } from "./axiosClient";
-import type { Category, CreateCategoryRequest, CategoryFilters } from "../types/category";
+import type {
+  Category,
+  CategoryFilters,
+  CreateCategoryRequest,
+  UpdateCategoryRequest,
+} from "../types/category";
+
+export async function updateCategory(
+  categoryId: number,
+  category: UpdateCategoryRequest
+) {
+  await axiosClient.put(`/Categories/${categoryId}`, category);
+}
 
 export async function getCategories(filters?: CategoryFilters) {
   const response = await axiosClient.get<Category[]>("/Categories", {
