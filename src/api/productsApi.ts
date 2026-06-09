@@ -4,6 +4,7 @@ import type {
   PagedResponse,
   Product,
   ProductFilters,
+  UpdateProductRequest,
 } from "../types/product";
 import type { RecalculatePricesResponse } from "../types/exchangeRate";
 
@@ -34,6 +35,13 @@ export async function createProduct(product: CreateProductRequest) {
   const response = await axiosClient.post<Product>("/Products", product);
 
   return response.data;
+}
+
+export async function updateProduct(
+  productId: number,
+  product: UpdateProductRequest
+) {
+  await axiosClient.put(`/Products/${productId}`, product);
 }
 
 export async function deactivateProduct(productId: number) {

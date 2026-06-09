@@ -4,6 +4,7 @@ import {
   deactivateProduct,
   getProducts,
   restoreProduct,
+  updateProduct
 } from "../api/productsApi";
 import type { Product } from "../types/product";
 import { getActiveCategories } from "../api/categoriesApi";
@@ -27,6 +28,17 @@ export function ProductsPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState<"all" | "active" | "inactive">("all");
+  const [editingProductId, setEditingProductId] = useState<number | null>(null);
+  const [editProduct, setEditProduct] = useState({
+    name: "",
+    brand: "",
+    sku: "",
+    costUsd: 0,
+    profitMarginPercentage: 30,
+    stock: 0,
+    minimumStock: 3,
+    categoryId: 0,
+  });
   const [newProduct, setNewProduct] = useState({
     name: "",
     brand: "",
@@ -142,6 +154,74 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
     await fetchProducts();
   } catch (error) {
     setError(getApiErrorMessage(error, "Could not create product."));
+  } finally {
+    setIsCreating(false);
+  }
+}
+
+function handleStartEditProduct(product: Product) {
+  setEditingProductId(product.id);
+
+  setEditProduct({
+    name: product.name,
+    brand: product.brand ?? "",
+    sku: product.sku ?? "",
+    costUsd: product.costUsd,
+    profitMarginPercentage: product.profitMarginPercentage,
+    stock: product.stock,
+    minimumStock: product.minimumStock,
+    categoryId: product.categoryId,
+  });
+
+  setError("");
+}
+
+function handleCancelEditProduct() {
+  setEditingProductId(null);
+
+  setEditProduct({
+    name: "",
+    brand: "",
+    sku: "",
+    costUsd: 0,
+    profitMarginPercentage: 30,
+    stock: 0,
+    minimumStock: 3,
+    categoryId: 0,
+  });
+
+  setError("");
+}
+
+async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+
+  if (editingProductId === null) return;
+
+  if (editProduct.categoryId === 0) {
+    setError("Please select a category.");
+    return;
+  }
+
+  try {
+    setIsCreating(true);
+    setError("");
+
+    await updateProduct(editingProductId, {
+      name: editProduct.name,
+      brand: editProduct.brand || undefined,
+      sku: editProduct.sku || undefined,
+      costUsd: Number(editProduct.costUsd),
+      profitMarginPercentage: Number(editProduct.profitMarginPercentage),
+      stock: Number(editProduct.stock),
+      minimumStock: Number(editProduct.minimumStock),
+      categoryId: Number(editProduct.categoryId),
+    });
+
+    handleCancelEditProduct();
+    await fetchProducts();
+  } catch (error) {
+    setError(getApiErrorMessage(error, "Could not update product."));
   } finally {
     setIsCreating(false);
   }
@@ -296,6 +376,150 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
 
       </form>
 
+      {editingProductId !== null && (
+        <form className="form-card" onSubmit={handleUpdateProduct}>
+          <h2>Edit Product</h2>
+
+          <div className="form-grid">
+            <label className="form-field">
+              <span>Name</span>
+              <input
+                type="text"
+                value={editProduct.name}
+                onChange={(event) =>
+                  setEditProduct({ ...editProduct, name: event.target.value })
+                }
+                required
+              />
+            </label>
+
+            <label className="form-field">
+              <span>Brand</span>
+              <input
+                type="text"
+                value={editProduct.brand}
+                onChange={(event) =>
+                  setEditProduct({ ...editProduct, brand: event.target.value })
+                }
+              />
+            </label>
+
+            <label className="form-field">
+              <span>SKU</span>
+              <input
+                type="text"
+                value={editProduct.sku}
+                onChange={(event) =>
+                  setEditProduct({ ...editProduct, sku: event.target.value })
+                }
+              />
+            </label>
+
+            <label className="form-field">
+              <span>Category</span>
+              <select
+                value={editProduct.categoryId}
+                onChange={(event) =>
+                  setEditProduct({
+                    ...editProduct,
+                    categoryId: Number(event.target.value),
+                  })
+                }
+                required
+              >
+                <option value={0}>Select category</option>
+
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="form-field">
+              <span>Cost USD</span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={editProduct.costUsd}
+                onChange={(event) =>
+                  setEditProduct({
+                    ...editProduct,
+                    costUsd: Number(event.target.value),
+                  })
+                }
+                required
+              />
+            </label>
+
+            <label className="form-field">
+              <span>Profit Margin %</span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={editProduct.profitMarginPercentage}
+                onChange={(event) =>
+                  setEditProduct({
+                    ...editProduct,
+                    profitMarginPercentage: Number(event.target.value),
+                  })
+                }
+                required
+              />
+            </label>
+
+            <label className="form-field">
+              <span>Stock</span>
+              <input
+                type="number"
+                min="0"
+                value={editProduct.stock}
+                onChange={(event) =>
+                  setEditProduct({
+                    ...editProduct,
+                    stock: Number(event.target.value),
+                  })
+                }
+                required
+              />
+            </label>
+
+            <label className="form-field">
+              <span>Minimum Stock</span>
+              <input
+                type="number"
+                min="0"
+                value={editProduct.minimumStock}
+                onChange={(event) =>
+                  setEditProduct({
+                    ...editProduct,
+                    minimumStock: Number(event.target.value),
+                  })
+                }
+                required
+              />
+            </label>
+          </div>
+
+          <div className="form-actions">
+            <button className="button button-primary" type="submit" disabled={isCreating}>
+              {isCreating ? "Saving..." : "Save Changes"}
+            </button>
+
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={handleCancelEditProduct}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+
       <div className="toolbar">
         <input
           type="text"
@@ -409,21 +633,30 @@ async function handleCreateProduct(event: React.FormEvent<HTMLFormElement>) {
                         </span>
                       </td>
                       <td>
-                        {product.isActive ? (
-                          <button
-                            className="button button-danger"
-                            onClick={() => handleDeactivateProduct(product.id)}
-                          >
-                            Deactivate
-                          </button>
-                        ) : (
+                        <div className="table-actions">
                           <button
                             className="button button-secondary"
-                            onClick={() => handleRestoreProduct(product.id)}
+                            onClick={() => handleStartEditProduct(product)}
                           >
-                            Restore
+                            Edit
                           </button>
-                        )}
+
+                          {product.isActive ? (
+                            <button
+                              className="button button-danger"
+                              onClick={() => handleDeactivateProduct(product.id)}
+                            >
+                              Deactivate
+                            </button>
+                          ) : (
+                            <button
+                              className="button button-secondary"
+                              onClick={() => handleRestoreProduct(product.id)}
+                            >
+                              Restore
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))

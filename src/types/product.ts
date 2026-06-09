@@ -41,3 +41,14 @@ export interface CreateProductRequest {
   minimumStock: number;
   categoryId: number;
 }
+
+export interface UpdateProductRequest {
+  name: string;
+  brand?: string;
+  sku?: string;
+  costUsd: number;
+  profitMarginPercentage: number;
+  stock: number;
+  minimumStock: number;
+  categoryId: number;
+}
