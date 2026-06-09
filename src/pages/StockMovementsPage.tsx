@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { getApiErrorMessage } from "../api/apiError";
 import { getProducts } from "../api/productsApi";
-import { getStockMovements } from "../api/stockMovementsApi";
+import {
+  createStockMovement,
+  getStockMovements,
+} from "../api/stockMovementsApi";
 import type { Product } from "../types/product";
 import type {
   StockMovement,
@@ -44,6 +47,15 @@ export function StockMovementsPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [newMovement, setNewMovement] = useState({
+    productId: 0,
+    type: 1 as StockMovementType,
+    quantity: 1,
+    reason: "",
+  });
+
+  const [isCreating, setIsCreating] = useState(false);
 
   const fetchMovements = useCallback(async () => {
     try {
@@ -96,12 +108,136 @@ export function StockMovementsPage() {
     fetchProducts();
   }, []);
 
+  async function handleCreateStockMovement(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+
+  if (newMovement.productId === 0) {
+    setError("Please select a product.");
+    return;
+  }
+
+  if (newMovement.quantity <= 0) {
+    setError("Quantity must be greater than zero.");
+    return;
+  }
+
+  try {
+    setIsCreating(true);
+    setError("");
+
+    await createStockMovement({
+      productId: newMovement.productId,
+      type: newMovement.type,
+      quantity: newMovement.quantity,
+      reason: newMovement.reason || undefined,
+    });
+
+    setNewMovement({
+      productId: 0,
+      type: 1,
+      quantity: 1,
+      reason: "",
+    });
+
+    await fetchMovements();
+
+    const productsData = await getProducts({
+      pageNumber: 1,
+      pageSize: 100,
+    });
+
+    setProducts(productsData.data);
+  } catch (error) {
+    setError(getApiErrorMessage(error, "Could not create stock movement."));
+  } finally {
+    setIsCreating(false);
+  }
+}
+
   return (
     <div>
       <PageHeader
         title="Stock Movements"
         description="Review stock entries, exits and manual adjustments."
       />
+
+      <form className="form-card" onSubmit={handleCreateStockMovement}>
+        <h2>Create Stock Movement</h2>
+
+        <div className="form-grid form-grid-stock-movement">
+          <label className="form-field">
+            <span>Product</span>
+            <select
+              value={newMovement.productId}
+              onChange={(event) =>
+                setNewMovement({
+                  ...newMovement,
+                  productId: Number(event.target.value),
+                })
+              }
+            >
+              <option value={0}>Select product</option>
+
+              {products.map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name} - Current stock: {product.stock}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="form-field">
+            <span>Type</span>
+            <select
+              value={newMovement.type}
+              onChange={(event) =>
+                setNewMovement({
+                  ...newMovement,
+                  type: Number(event.target.value) as StockMovementType,
+                })
+              }
+            >
+              <option value={1}>In</option>
+              <option value={2}>Out</option>
+              <option value={3}>Adjustment</option>
+            </select>
+          </label>
+
+          <label className="form-field">
+            <span>Quantity</span>
+            <input
+              type="number"
+              min="1"
+              value={newMovement.quantity}
+              onChange={(event) =>
+                setNewMovement({
+                  ...newMovement,
+                  quantity: Number(event.target.value),
+                })
+              }
+            />
+          </label>
+
+          <label className="form-field">
+            <span>Reason</span>
+            <input
+              type="text"
+              placeholder="Example: Supplier purchase"
+              value={newMovement.reason}
+              onChange={(event) =>
+                setNewMovement({
+                  ...newMovement,
+                  reason: event.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+
+        <button className="button button-primary" type="submit" disabled={isCreating}>
+          {isCreating ? "Creating..." : "Create Movement"}
+        </button>
+      </form>
 
       <div className="toolbar">
         <select

@@ -506,6 +506,7 @@ td {
 
   .form-grid,
   .form-grid-sale,
+  .form-grid-stock-movement,
   .form-grid-compact {
     grid-template-columns: 1fr;
   }
@@ -535,4 +536,8 @@ td {
   to {
     transform: rotate(360deg);
   }
+}
+
+.form-grid-stock-movement {
+  grid-template-columns: 2fr 160px 140px 2fr;
 }

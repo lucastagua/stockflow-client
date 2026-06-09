@@ -28,3 +28,10 @@ export interface StockMovementFilters {
   pageNumber: number;
   pageSize: number;
 }
+
+export interface CreateStockMovementRequest {
+  productId: number;
+  type: StockMovementType;
+  quantity: number;
+  reason?: string;
+}

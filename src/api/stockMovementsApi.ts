@@ -1,9 +1,19 @@
 import { axiosClient } from "./axiosClient";
 import type {
+  CreateStockMovementRequest,
   PagedResponse,
   StockMovement,
   StockMovementFilters,
 } from "../types/stockMovement";
+
+export async function createStockMovement(movement: CreateStockMovementRequest) {
+  const response = await axiosClient.post<StockMovement>(
+    "/StockMovements",
+    movement
+  );
+
+  return response.data;
+}
 
 export async function getStockMovements(filters: StockMovementFilters) {
   const response = await axiosClient.get<PagedResponse<StockMovement>>(
