@@ -6,7 +6,7 @@ import {
   restoreProduct,
   updateProduct
 } from "../api/productsApi";
-import type { Product } from "../types/product";
+import type { Product, ProductFormValues } from "../types/product";
 import { getActiveCategories } from "../api/categoriesApi";
 import type { Category } from "../types/category";
 import { getApiErrorMessage } from "../api/apiError";
@@ -14,6 +14,7 @@ import { PageHeader } from "../components/PageHeader";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
+import { ProductForm } from "../components/ProductForm";
 
 
 export function ProductsPage() {
@@ -29,7 +30,7 @@ export function ProductsPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState<"all" | "active" | "inactive">("all");
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
-  const [editProduct, setEditProduct] = useState({
+  const [editProduct, setEditProduct] = useState<ProductFormValues>({
     name: "",
     brand: "",
     sku: "",
@@ -39,7 +40,7 @@ export function ProductsPage() {
     minimumStock: 3,
     categoryId: 0,
   });
-  const [newProduct, setNewProduct] = useState({
+  const [newProduct, setNewProduct] = useState<ProductFormValues>({
     name: "",
     brand: "",
     sku: "",
@@ -234,290 +235,27 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
         description="Manage your product inventory, pricing and stock status."
       />
 
-      <form className="form-card" onSubmit={handleCreateProduct}>
-        <h2>Create Product</h2>
-
-        <div className="form-grid">
-          <label className="form-field">
-            <span>Name</span>
-            <input
-              type="text"
-              placeholder="Example: Mechanical Keyboard"
-              value={newProduct.name}
-              onChange={(event) =>
-                setNewProduct({ ...newProduct, name: event.target.value })
-              }
-              required
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Brand</span>
-            <input
-              type="text"
-              placeholder="Example: Logitech"
-              value={newProduct.brand}
-              onChange={(event) =>
-                setNewProduct({ ...newProduct, brand: event.target.value })
-              }
-            />
-          </label>
-
-          <label className="form-field">
-            <span>SKU</span>
-            <input
-              type="text"
-              placeholder="Example: LOG-MOUSE-001"
-              value={newProduct.sku}
-              onChange={(event) =>
-                setNewProduct({ ...newProduct, sku: event.target.value })
-              }
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Category</span>
-            <select
-              value={newProduct.categoryId}
-              onChange={(event) =>
-                setNewProduct({
-                  ...newProduct,
-                  categoryId: Number(event.target.value),
-                })
-              }
-              required
-            >
-              <option value={0}>Select category</option>
-
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="form-field">
-            <span>Cost USD</span>
-            <input
-              type="number"
-              placeholder="Example: 45"
-              value={newProduct.costUsd}
-              onChange={(event) =>
-                setNewProduct({
-                  ...newProduct,
-                  costUsd: Number(event.target.value),
-                })
-              }
-              min="0"
-              step="0.01"
-              required
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Profit Margin %</span>
-            <input
-              type="number"
-              placeholder="Example: 35"
-              value={newProduct.profitMarginPercentage}
-              onChange={(event) =>
-                setNewProduct({
-                  ...newProduct,
-                  profitMarginPercentage: Number(event.target.value),
-                })
-              }
-              min="0"
-              step="0.01"
-              required
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Initial Stock</span>
-            <input
-              type="number"
-              placeholder="Example: 10"
-              value={newProduct.stock}
-              onChange={(event) =>
-                setNewProduct({
-                  ...newProduct,
-                  stock: Number(event.target.value),
-                })
-              }
-              min="0"
-              required
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Minimum Stock</span>
-            <input
-              type="number"
-              placeholder="Example: 3"
-              value={newProduct.minimumStock}
-              onChange={(event) =>
-                setNewProduct({
-                  ...newProduct,
-                  minimumStock: Number(event.target.value),
-                })
-              }
-              min="0"
-              required
-            />
-          </label>
-        </div>
-
-        <button className="button button-primary" type="submit" disabled={isCreating}>
-          {isCreating ? "Creating..." : "Create Product"}
-        </button>
-
-        <ErrorMessage message={error} />
-
-      </form>
-
+      <ProductForm
+        title="Create Product"
+        values={newProduct}
+        categories={categories}
+        submitLabel="Create Product"
+        isSubmitting={isCreating}
+        onChange={setNewProduct}
+        onSubmit={handleCreateProduct}
+      />
+      
       {editingProductId !== null && (
-        <form className="form-card" onSubmit={handleUpdateProduct}>
-          <h2>Edit Product</h2>
-
-          <div className="form-grid">
-            <label className="form-field">
-              <span>Name</span>
-              <input
-                type="text"
-                value={editProduct.name}
-                onChange={(event) =>
-                  setEditProduct({ ...editProduct, name: event.target.value })
-                }
-                required
-              />
-            </label>
-
-            <label className="form-field">
-              <span>Brand</span>
-              <input
-                type="text"
-                value={editProduct.brand}
-                onChange={(event) =>
-                  setEditProduct({ ...editProduct, brand: event.target.value })
-                }
-              />
-            </label>
-
-            <label className="form-field">
-              <span>SKU</span>
-              <input
-                type="text"
-                value={editProduct.sku}
-                onChange={(event) =>
-                  setEditProduct({ ...editProduct, sku: event.target.value })
-                }
-              />
-            </label>
-
-            <label className="form-field">
-              <span>Category</span>
-              <select
-                value={editProduct.categoryId}
-                onChange={(event) =>
-                  setEditProduct({
-                    ...editProduct,
-                    categoryId: Number(event.target.value),
-                  })
-                }
-                required
-              >
-                <option value={0}>Select category</option>
-
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="form-field">
-              <span>Cost USD</span>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={editProduct.costUsd}
-                onChange={(event) =>
-                  setEditProduct({
-                    ...editProduct,
-                    costUsd: Number(event.target.value),
-                  })
-                }
-                required
-              />
-            </label>
-
-            <label className="form-field">
-              <span>Profit Margin %</span>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={editProduct.profitMarginPercentage}
-                onChange={(event) =>
-                  setEditProduct({
-                    ...editProduct,
-                    profitMarginPercentage: Number(event.target.value),
-                  })
-                }
-                required
-              />
-            </label>
-
-            <label className="form-field">
-              <span>Stock</span>
-              <input
-                type="number"
-                min="0"
-                value={editProduct.stock}
-                onChange={(event) =>
-                  setEditProduct({
-                    ...editProduct,
-                    stock: Number(event.target.value),
-                  })
-                }
-                required
-              />
-            </label>
-
-            <label className="form-field">
-              <span>Minimum Stock</span>
-              <input
-                type="number"
-                min="0"
-                value={editProduct.minimumStock}
-                onChange={(event) =>
-                  setEditProduct({
-                    ...editProduct,
-                    minimumStock: Number(event.target.value),
-                  })
-                }
-                required
-              />
-            </label>
-          </div>
-
-          <div className="form-actions">
-            <button className="button button-primary" type="submit" disabled={isCreating}>
-              {isCreating ? "Saving..." : "Save Changes"}
-            </button>
-
-            <button
-              className="button button-secondary"
-              type="button"
-              onClick={handleCancelEditProduct}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+        <ProductForm
+          title="Edit Product"
+          values={editProduct}
+          categories={categories}
+          submitLabel="Save Changes"
+          isSubmitting={isCreating}
+          onChange={setEditProduct}
+          onSubmit={handleUpdateProduct}
+          onCancel={handleCancelEditProduct}
+        />
       )}
 
       <div className="toolbar">

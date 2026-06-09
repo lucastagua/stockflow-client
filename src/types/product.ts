@@ -52,3 +52,14 @@ export interface UpdateProductRequest {
   minimumStock: number;
   categoryId: number;
 }
+
+export interface ProductFormValues {
+  name: string;
+  brand: string;
+  sku: string;
+  costUsd: number;
+  profitMarginPercentage: number;
+  stock: number;
+  minimumStock: number;
+  categoryId: number;
+}
