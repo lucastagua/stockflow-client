@@ -515,6 +515,10 @@ td {
   .pagination {
     justify-content: center;
   }
+
+  .sale-details-summary {
+  grid-template-columns: 1fr;
+  }
 }
 
 .loading-state {
@@ -579,4 +583,16 @@ td {
   font-size: 64px;
   font-weight: 800;
   line-height: 1;
+}
+
+.sale-details-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+table tfoot td {
+  background: #f9fafb;
+  border-top: 2px solid #e5e7eb;
 }

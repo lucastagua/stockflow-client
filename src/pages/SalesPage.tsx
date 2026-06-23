@@ -8,6 +8,7 @@ import { PageHeader } from "../components/PageHeader";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
+import { Link } from "react-router-dom";
 
 function getSaleStatusLabel(status: SaleStatus) {
   if (status === 1) return "Completed";
@@ -345,16 +346,25 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
                         </span>
                       </td>
                       <td>
-                        {sale.status === 1 ? (
-                          <button
-                            className="button button-danger"
-                            onClick={() => handleCancelSale(sale.id)}
+                        <div className="table-actions">
+                          <Link
+                            className="button button-secondary"
+                            to={`/sales/${sale.id}`}
                           >
-                            Cancel
-                          </button>
-                        ) : (
-                          <span className="muted-text">No actions</span>
-                        )}
+                            View
+                          </Link>
+
+                          {sale.status === 1 ? (
+                            <button
+                              className="button button-danger"
+                              onClick={() => handleCancelSale(sale.id)}
+                            >
+                              Cancel
+                            </button>
+                          ) : (
+                            <span className="muted-text">No actions</span>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))

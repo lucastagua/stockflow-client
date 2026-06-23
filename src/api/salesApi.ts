@@ -29,3 +29,9 @@ export async function getSales(filters: SaleFilters) {
 export async function cancelSale(saleId: number) {
   await axiosClient.post(`/Sales/${saleId}/cancel`);
 }
+
+export async function getSaleById(saleId: number) {
+  const response = await axiosClient.get<Sale>(`/Sales/${saleId}`);
+
+  return response.data;
+}

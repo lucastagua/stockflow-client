@@ -7,6 +7,7 @@ import { StockMovementsPage } from "./pages/StockMovementsPage";
 import { CategoriesPage } from "./pages/CategoriesPage";
 import { ExchangeRatesPage } from "./pages/ExchangeRatesPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { SaleDetailsPage } from "./pages/SaleDetailsPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/exchange-rates" element={<ExchangeRatesPage />} />
           <Route path="/sales" element={<SalesPage />} />
+          <Route path="/sales/:id" element={<SaleDetailsPage />} />
           <Route path="/stock-movements" element={<StockMovementsPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="*" element={<NotFoundPage />} />
