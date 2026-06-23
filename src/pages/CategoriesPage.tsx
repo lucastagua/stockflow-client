@@ -21,6 +21,7 @@ export function CategoriesPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
   const [editCategoryName, setEditCategoryName] = useState("");
+  const [editCategoryIsActive, setEditCategoryIsActive] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState("");
 
@@ -73,12 +74,14 @@ export function CategoriesPage() {
   function handleStartEditCategory(category: Category) {
     setEditingCategoryId(category.id);
     setEditCategoryName(category.name);
+    setEditCategoryIsActive(category.isActive);
     setError("");
   }
 
   function handleCancelEditCategory() {
     setEditingCategoryId(null);
     setEditCategoryName("");
+    setEditCategoryIsActive(true);
     setError("");
   }
 
@@ -93,7 +96,7 @@ export function CategoriesPage() {
 
       await updateCategory(editingCategoryId, {
         name: editCategoryName,
-        isActive: true,
+        isActive: editCategoryIsActive,
       });
 
       handleCancelEditCategory();

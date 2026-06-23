@@ -554,3 +554,29 @@ td {
   gap: 8px;
   align-items: center;
 }
+
+.not-found-page {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.not-found-page h1 {
+  margin: 0 0 8px;
+}
+
+.not-found-page p {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.not-found-code {
+  margin: 0 0 8px !important;
+  color: #2563eb !important;
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+}
