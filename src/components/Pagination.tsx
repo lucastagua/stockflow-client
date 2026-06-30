@@ -14,7 +14,7 @@ export function Pagination({
   return (
     <div className="pagination">
       <button
-        disabled={pageNumber === 1}
+        disabled={pageNumber <= 1}
         onClick={() => onPageChange(pageNumber - 1)}
       >
         Previous
@@ -25,7 +25,7 @@ export function Pagination({
       </span>
 
       <button
-        disabled={pageNumber === totalPages}
+        disabled={pageNumber >= totalPages}
         onClick={() => onPageChange(pageNumber + 1)}
       >
         Next

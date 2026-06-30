@@ -596,3 +596,49 @@ table tfoot td {
   background: #f9fafb;
   border-top: 2px solid #e5e7eb;
 }
+
+.toolbar-products {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 2fr)
+    repeat(5, minmax(160px, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+.toolbar-products input[type="text"],
+.toolbar-products select {
+  width: 100%;
+  min-width: 0;
+}
+
+.toolbar-products .toolbar-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: normal;
+}
+
+.results-summary {
+  display: flex;
+  justify-content: flex-end;
+  margin: 6px 0 12px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+@media (max-width: 1400px) {
+  .toolbar-products {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .toolbar-products {
+    grid-template-columns: 1fr;
+  }
+
+  .results-summary {
+    justify-content: flex-start;
+  }
+}

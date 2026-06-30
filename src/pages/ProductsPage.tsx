@@ -25,7 +25,9 @@ import { ProductForm } from "../components/ProductForm";
 export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [search, setSearch] = useState("");
   const [lowStock, setLowStock] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,12 +81,13 @@ export function ProductsPage() {
 
     setProducts(data.data);
     setTotalPages(data.totalPages);
+    setTotalRecords(data.totalRecords);
   } catch {
     setError("Could not load products.");
   } finally {
     setIsLoading(false);
   }
-}, [pageNumber, search, lowStock, selectedCategoryId, selectedStatus, sortBy, sortDirection]);
+}, [pageNumber, pageSize, search, lowStock, selectedCategoryId, selectedStatus, sortBy, sortDirection]);
 
 useEffect(() => {
   fetchProducts();
@@ -102,6 +105,12 @@ useEffect(() => {
 
   fetchCategories();
 }, []);
+
+useEffect(() => {
+  if (totalPages > 0 && pageNumber > totalPages) {
+    setPageNumber(totalPages);
+  }
+}, [pageNumber, totalPages]);
 
   async function handleDeactivateProduct(productId: number) {
   const confirmed = window.confirm(
@@ -267,7 +276,7 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
         />
       )}
 
-      <div className="toolbar">
+      <div className="toolbar toolbar-products">
         <input
           type="text"
           placeholder="Search by name, brand or SKU..."
@@ -330,7 +339,20 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
           <option value="desc">Descending</option>
         </select>
 
-        <label className="checkbox-label">
+        <select
+          value={pageSize}
+          onChange={(event) => {
+            setPageSize(Number(event.target.value));
+            setPageNumber(1);
+          }}
+        >
+          <option value={5}>5 per page</option>
+          <option value={10}>10 per page</option>
+          <option value={20}>20 per page</option>
+          <option value={50}>50 per page</option>
+        </select>
+
+        <label className="checkbox-label toolbar-checkbox">
           <input
             type="checkbox"
             checked={lowStock}
@@ -341,6 +363,14 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
           />
           Low stock only
         </label>
+      </div>
+
+      <div className="results-summary">
+        <span>
+          {totalRecords === 1
+            ? "1 product found"
+            : `${totalRecords} products found`}
+        </span>
       </div>
 
       <ErrorMessage message={error} /> 
