@@ -6,7 +6,12 @@ import {
   restoreProduct,
   updateProduct
 } from "../api/productsApi";
-import type { Product, ProductFormValues } from "../types/product";
+import type {
+  Product,
+  ProductFormValues,
+  ProductSortBy,
+  SortDirection,
+} from "../types/product";
 import { getActiveCategories } from "../api/categoriesApi";
 import type { Category } from "../types/category";
 import { getApiErrorMessage } from "../api/apiError";
@@ -29,6 +34,8 @@ export function ProductsPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState<"all" | "active" | "inactive">("all");
+  const [sortBy, setSortBy] = useState<ProductSortBy>("createdAt");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
   const [editProduct, setEditProduct] = useState<ProductFormValues>({
     name: "",
@@ -66,6 +73,8 @@ export function ProductsPage() {
         selectedStatus === "all"
           ? undefined
           : selectedStatus === "active",
+      sortBy,
+      sortDirection,
     });
 
     setProducts(data.data);
@@ -75,7 +84,7 @@ export function ProductsPage() {
   } finally {
     setIsLoading(false);
   }
-}, [pageNumber, search, lowStock, selectedCategoryId, selectedStatus]);
+}, [pageNumber, search, lowStock, selectedCategoryId, selectedStatus, sortBy, sortDirection]);
 
 useEffect(() => {
   fetchProducts();
@@ -297,6 +306,30 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
           <option value="inactive">Inactive</option>
         </select>
 
+        <select
+          value={sortBy}
+          onChange={(event) => {
+            setSortBy(event.target.value as ProductSortBy);
+            setPageNumber(1);
+          }}
+        >
+          <option value="createdAt">Sort by creation date</option>
+          <option value="name">Sort by name</option>
+          <option value="price">Sort by price</option>
+          <option value="stock">Sort by stock</option>
+        </select>
+
+        <select
+          value={sortDirection}
+          onChange={(event) => {
+            setSortDirection(event.target.value as SortDirection);
+            setPageNumber(1);
+          }}
+        >
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+
         <label className="checkbox-label">
           <input
             type="checkbox"
@@ -309,6 +342,8 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
           Low stock only
         </label>
       </div>
+
+      <ErrorMessage message={error} /> 
 
       {isLoading && <LoadingState message="Loading products..." />}
 

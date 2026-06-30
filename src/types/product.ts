@@ -28,6 +28,8 @@ export interface ProductFilters {
   search?: string;
   categoryId?: number;
   isActive?: boolean;
+  sortBy?: ProductSortBy;
+  sortDirection?: SortDirection;
   lowStock?: boolean;
 }
 
@@ -63,3 +65,7 @@ export interface ProductFormValues {
   minimumStock: number;
   categoryId: number;
 }
+
+export type ProductSortBy = "name" | "price" | "stock" | "createdAt";
+
+export type SortDirection = "asc" | "desc";

@@ -25,6 +25,8 @@ export async function getProducts(filters: ProductFilters) {
       categoryId: filters.categoryId,
       isActive: filters.isActive,
       lowStock: filters.lowStock || undefined,
+      sortBy: filters.sortBy,
+      sortDirection: filters.sortDirection,
     },
   });
 
