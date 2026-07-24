@@ -20,7 +20,9 @@ function getSaleStatusLabel(status: SaleStatus) {
 export function SalesPage() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState<"all" | "completed" | "cancelled">("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -49,17 +51,18 @@ export function SalesPage() {
         from,
         to,
         pageNumber,
-        pageSize: 10,
+        pageSize,
       });
 
       setSales(data.data);
       setTotalPages(data.totalPages);
+      setTotalRecords(data.totalRecords);
     } catch (error) {
       setError(getApiErrorMessage(error, "Could not load sales."));
     } finally {
       setIsLoading(false);
     }
-  }, [selectedStatus, from, to, pageNumber]);
+  }, [selectedStatus, from, to, pageNumber, pageSize]);
 
   useEffect(() => {
     fetchSales();
@@ -81,7 +84,13 @@ export function SalesPage() {
   }
 
   fetchActiveProducts();
-}, []);
+  }, []);
+
+  useEffect(() => {
+    if (totalPages > 0 && pageNumber > totalPages) {
+      setPageNumber(totalPages);
+    }
+  }, [pageNumber, totalPages]);
 
   async function handleCancelSale(saleId: number) {
     const confirmed = window.confirm(
@@ -293,6 +302,27 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
             setPageNumber(1);
           }}
         />
+
+        <select
+          value={pageSize}
+          onChange={(event) => {
+            setPageSize(Number(event.target.value));
+            setPageNumber(1);
+          }}
+        >
+          <option value={5}>5 per page</option>
+          <option value={10}>10 per page</option>
+          <option value={20}>20 per page</option>
+          <option value={50}>50 per page</option>
+        </select>
+      </div>
+
+      <div className="results-summary">
+        <span>
+          {totalRecords === 1
+            ? "1 sale found"
+            : `${totalRecords} sales found`}
+        </span>
       </div>
 
       <ErrorMessage message={error} />
