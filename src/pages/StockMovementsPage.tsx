@@ -35,7 +35,9 @@ export function StockMovementsPage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const [selectedProductId, setSelectedProductId] = useState(0);
   const [selectedType, setSelectedType] = useState<
@@ -75,17 +77,18 @@ export function StockMovementsPage() {
         from,
         to,
         pageNumber,
-        pageSize: 10,
+        pageSize,
       });
 
       setMovements(data.data);
       setTotalPages(data.totalPages);
+      setTotalRecords(data.totalRecords);
     } catch (error) {
       setError(getApiErrorMessage(error, "Could not load stock movements."));
     } finally {
       setIsLoading(false);
     }
-  }, [selectedProductId, selectedType, from, to, pageNumber]);
+  }, [selectedProductId, selectedType, from, to, pageNumber, pageSize]);
 
   useEffect(() => {
     fetchMovements();
@@ -107,6 +110,12 @@ export function StockMovementsPage() {
 
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    if (totalPages > 0 && pageNumber > totalPages) {
+      setPageNumber(totalPages);
+    }
+  }, [pageNumber, totalPages]);
 
   async function handleCreateStockMovement(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
@@ -239,55 +248,80 @@ export function StockMovementsPage() {
         </button>
       </form>
 
-      <div className="toolbar">
-        <select
-          value={selectedProductId}
-          onChange={(event) => {
-            setSelectedProductId(Number(event.target.value));
-            setPageNumber(1);
-          }}
-        >
-          <option value={0}>All products</option>
+      <div className="stock-movements-filters-card">
+        <div className="stock-movements-filters-row stock-movements-filters-main">
+          <select
+            value={selectedProductId}
+            onChange={(event) => {
+              setSelectedProductId(Number(event.target.value));
+              setPageNumber(1);
+            }}
+          >
+            <option value={0}>All products</option>
 
-          {products.map((product) => (
-            <option key={product.id} value={product.id}>
-              {product.name}
-            </option>
-          ))}
-        </select>
+            {products.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.name}
+              </option>
+            ))}
+          </select>
 
-        <select
-          value={selectedType}
-          onChange={(event) => {
-            setSelectedType(
-              event.target.value as "all" | "in" | "out" | "adjustment"
-            );
-            setPageNumber(1);
-          }}
-        >
-          <option value="all">All movement types</option>
-          <option value="in">In</option>
-          <option value="out">Out</option>
-          <option value="adjustment">Adjustment</option>
-        </select>
+          <select
+            value={selectedType}
+            onChange={(event) => {
+              setSelectedType(
+                event.target.value as "all" | "in" | "out" | "adjustment"
+              );
+              setPageNumber(1);
+            }}
+          >
+            <option value="all">All movement types</option>
+            <option value="in">In</option>
+            <option value="out">Out</option>
+            <option value="adjustment">Adjustment</option>
+          </select>
+        </div>
 
-        <input
-          type="date"
-          value={from}
-          onChange={(event) => {
-            setFrom(event.target.value);
-            setPageNumber(1);
-          }}
-        />
+        <div className="stock-movements-filters-row stock-movements-filters-secondary">
+          <input
+            type="date"
+            value={from}
+            onChange={(event) => {
+              setFrom(event.target.value);
+              setPageNumber(1);
+            }}
+          />
 
-        <input
-          type="date"
-          value={to}
-          onChange={(event) => {
-            setTo(event.target.value);
-            setPageNumber(1);
-          }}
-        />
+          <input
+            type="date"
+            value={to}
+            onChange={(event) => {
+              setTo(event.target.value);
+              setPageNumber(1);
+            }}
+          />
+
+          <select
+            value={pageSize}
+            onChange={(event) => {
+              setPageSize(Number(event.target.value));
+              setPageNumber(1);
+            }}
+          >
+            <option value={5}>5 per page</option>
+            <option value={10}>10 per page</option>
+            <option value={20}>20 per page</option>
+            <option value={50}>50 per page</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="results-summary">
+        <span>
+          {totalRecords === 1
+            ? "1 movement found"
+            : `${totalRecords} movements found`}
+        </span>
       </div>
 
         <ErrorMessage message={error} />

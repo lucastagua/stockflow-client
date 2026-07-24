@@ -544,7 +544,7 @@ td {
 }
 
 .form-grid-stock-movement {
-  grid-template-columns: 2fr 160px 140px 2fr;
+  grid-template-columns: minmax(260px, 2fr) minmax(140px, 1fr) minmax(120px, 1fr) minmax(220px, 2fr);
 }
 
 .form-actions {
@@ -680,6 +680,49 @@ table tfoot td {
 @media (max-width: 700px) {
   .products-filters-main,
   .products-filters-secondary {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stock-movements-filters-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+.stock-movements-filters-row {
+  display: grid;
+  gap: 12px;
+}
+
+.stock-movements-filters-main {
+  grid-template-columns: minmax(260px, 2fr) minmax(220px, 1fr);
+  margin-bottom: 12px;
+}
+
+.stock-movements-filters-secondary {
+  grid-template-columns: repeat(3, minmax(170px, 1fr));
+}
+
+.stock-movements-filters-card select,
+.stock-movements-filters-card input[type="date"] {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .form-grid,
+  .form-grid-sale,
+  .form-grid-stock-movement,
+  .form-grid-compact {
     grid-template-columns: 1fr;
   }
 }
