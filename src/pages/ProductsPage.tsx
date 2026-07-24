@@ -276,94 +276,98 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
         />
       )}
 
-      <div className="toolbar toolbar-products">
+  <div className="products-filters-card">
+    <div className="products-filters-row products-filters-main">
+      <input
+        type="text"
+        placeholder="Search by name, brand or SKU..."
+        value={search}
+        onChange={(event) => {
+          setSearch(event.target.value);
+          setPageNumber(1);
+        }}
+      />
+
+      <select
+        value={selectedCategoryId}
+        onChange={(event) => {
+          setSelectedCategoryId(Number(event.target.value));
+          setPageNumber(1);
+        }}
+      >
+        <option value={0}>All categories</option>
+
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={selectedStatus}
+        onChange={(event) => {
+          setSelectedStatus(event.target.value as "all" | "active" | "inactive");
+          setPageNumber(1);
+        }}
+      >
+        <option value="all">All statuses</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+
+    <div className="products-filters-row products-filters-secondary">
+      <select
+        value={sortBy}
+        onChange={(event) => {
+          setSortBy(event.target.value as ProductSortBy);
+          setPageNumber(1);
+        }}
+      >
+        <option value="createdAt">Sort by creation date</option>
+        <option value="name">Sort by name</option>
+        <option value="price">Sort by price</option>
+        <option value="stock">Sort by stock</option>
+      </select>
+
+      <select
+        value={sortDirection}
+        onChange={(event) => {
+          setSortDirection(event.target.value as SortDirection);
+          setPageNumber(1);
+        }}
+      >
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+
+      <select
+        value={pageSize}
+        onChange={(event) => {
+          setPageSize(Number(event.target.value));
+          setPageNumber(1);
+        }}
+      >
+        <option value={5}>5 per page</option>
+        <option value={10}>10 per page</option>
+        <option value={20}>20 per page</option>
+        <option value={50}>50 per page</option>
+      </select>
+
+      <label className="checkbox-label products-low-stock-filter">
         <input
-          type="text"
-          placeholder="Search by name, brand or SKU..."
-          value={search}
+          type="checkbox"
+          checked={lowStock}
           onChange={(event) => {
-            setSearch(event.target.value);
+            setLowStock(event.target.checked);
             setPageNumber(1);
           }}
         />
-
-        <select
-          value={selectedCategoryId}
-          onChange={(event) => {
-            setSelectedCategoryId(Number(event.target.value));
-            setPageNumber(1);
-          }}
-        >
-          <option value={0}>All categories</option>
-
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={selectedStatus}
-          onChange={(event) => {
-            setSelectedStatus(event.target.value as "all" | "active" | "inactive");
-            setPageNumber(1);
-          }}
-        >
-          <option value="all">All statuses</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
-
-        <select
-          value={sortBy}
-          onChange={(event) => {
-            setSortBy(event.target.value as ProductSortBy);
-            setPageNumber(1);
-          }}
-        >
-          <option value="createdAt">Sort by creation date</option>
-          <option value="name">Sort by name</option>
-          <option value="price">Sort by price</option>
-          <option value="stock">Sort by stock</option>
-        </select>
-
-        <select
-          value={sortDirection}
-          onChange={(event) => {
-            setSortDirection(event.target.value as SortDirection);
-            setPageNumber(1);
-          }}
-        >
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
-
-        <select
-          value={pageSize}
-          onChange={(event) => {
-            setPageSize(Number(event.target.value));
-            setPageNumber(1);
-          }}
-        >
-          <option value={5}>5 per page</option>
-          <option value={10}>10 per page</option>
-          <option value={20}>20 per page</option>
-          <option value={50}>50 per page</option>
-        </select>
-
-        <label className="checkbox-label toolbar-checkbox">
-          <input
-            type="checkbox"
-            checked={lowStock}
-            onChange={(event) => {
-              setLowStock(event.target.checked);
-              setPageNumber(1);
-            }}
-          />
-          Low stock only
-        </label>
-      </div>
+        Low stock only
+      </label>
+    </div>
+  </div>
 
       <div className="results-summary">
         <span>
