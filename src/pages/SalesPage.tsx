@@ -269,52 +269,56 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
           {isCreating ? "Creating..." : "Create Sale"}
         </button>
       </form>
+      
+      <div className="sales-filters-card">
+        <div className="sales-filters-row sales-filters-main">
+          <select
+            value={selectedStatus}
+            onChange={(event) => {
+              setSelectedStatus(
+                event.target.value as "all" | "completed" | "cancelled"
+              );
+              setPageNumber(1);
+            }}
+          >
+            <option value="all">All statuses</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
 
-      <div className="toolbar">
-        <select
-          value={selectedStatus}
-          onChange={(event) => {
-            setSelectedStatus(
-              event.target.value as "all" | "completed" | "cancelled"
-            );
-            setPageNumber(1);
-          }}
-        >
-          <option value="all">All statuses</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
+          <select
+            value={pageSize}
+            onChange={(event) => {
+              setPageSize(Number(event.target.value));
+              setPageNumber(1);
+            }}
+          >
+            <option value={5}>5 per page</option>
+            <option value={10}>10 per page</option>
+            <option value={20}>20 per page</option>
+            <option value={50}>50 per page</option>
+          </select>
+        </div>
 
-        <input
-          type="date"
-          value={from}
-          onChange={(event) => {
-            setFrom(event.target.value);
-            setPageNumber(1);
-          }}
-        />
+        <div className="sales-filters-row sales-filters-secondary">
+          <input
+            type="date"
+            value={from}
+            onChange={(event) => {
+              setFrom(event.target.value);
+              setPageNumber(1);
+            }}
+          />
 
-        <input
-          type="date"
-          value={to}
-          onChange={(event) => {
-            setTo(event.target.value);
-            setPageNumber(1);
-          }}
-        />
-
-        <select
-          value={pageSize}
-          onChange={(event) => {
-            setPageSize(Number(event.target.value));
-            setPageNumber(1);
-          }}
-        >
-          <option value={5}>5 per page</option>
-          <option value={10}>10 per page</option>
-          <option value={20}>20 per page</option>
-          <option value={50}>50 per page</option>
-        </select>
+          <input
+            type="date"
+            value={to}
+            onChange={(event) => {
+              setTo(event.target.value);
+              setPageNumber(1);
+            }}
+          />
+        </div>
       </div>
 
       <div className="results-summary">
