@@ -14,6 +14,7 @@ import { PageHeader } from "../components/PageHeader";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
+import { StockMovementsFilters } from "../components/StockMovementsFilters";
 
 function getMovementTypeLabel(type: StockMovementType) {
   if (type === 1) return "In";
@@ -248,73 +249,34 @@ export function StockMovementsPage() {
         </button>
       </form>
 
-      <div className="stock-movements-filters-card">
-        <div className="stock-movements-filters-row stock-movements-filters-main">
-          <select
-            value={selectedProductId}
-            onChange={(event) => {
-              setSelectedProductId(Number(event.target.value));
-              setPageNumber(1);
-            }}
-          >
-            <option value={0}>All products</option>
-
-            {products.map((product) => (
-              <option key={product.id} value={product.id}>
-                {product.name}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={selectedType}
-            onChange={(event) => {
-              setSelectedType(
-                event.target.value as "all" | "in" | "out" | "adjustment"
-              );
-              setPageNumber(1);
-            }}
-          >
-            <option value="all">All movement types</option>
-            <option value="in">In</option>
-            <option value="out">Out</option>
-            <option value="adjustment">Adjustment</option>
-          </select>
-        </div>
-
-        <div className="stock-movements-filters-row stock-movements-filters-secondary">
-          <input
-            type="date"
-            value={from}
-            onChange={(event) => {
-              setFrom(event.target.value);
-              setPageNumber(1);
-            }}
-          />
-
-          <input
-            type="date"
-            value={to}
-            onChange={(event) => {
-              setTo(event.target.value);
-              setPageNumber(1);
-            }}
-          />
-
-          <select
-            value={pageSize}
-            onChange={(event) => {
-              setPageSize(Number(event.target.value));
-              setPageNumber(1);
-            }}
-          >
-            <option value={5}>5 per page</option>
-            <option value={10}>10 per page</option>
-            <option value={20}>20 per page</option>
-            <option value={50}>50 per page</option>
-          </select>
-        </div>
-      </div>
+      <StockMovementsFilters
+        selectedProductId={selectedProductId}
+        selectedType={selectedType}
+        from={from}
+        to={to}
+        pageSize={pageSize}
+        products={products}
+        onProductChange={(value) => {
+          setSelectedProductId(value);
+          setPageNumber(1);
+        }}
+        onTypeChange={(value) => {
+          setSelectedType(value);
+          setPageNumber(1);
+        }}
+        onFromChange={(value) => {
+          setFrom(value);
+          setPageNumber(1);
+        }}
+        onToChange={(value) => {
+          setTo(value);
+          setPageNumber(1);
+        }}
+        onPageSizeChange={(value) => {
+          setPageSize(value);
+          setPageNumber(1);
+        }}
+      />
 
       <div className="results-summary">
         <span>
