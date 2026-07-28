@@ -9,6 +9,7 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
 import { Link } from "react-router-dom";
+import { SalesFilters } from "../components/SalesFilters";
 
 function getSaleStatusLabel(status: SaleStatus) {
   if (status === 1) return "Completed";
@@ -270,56 +271,28 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
         </button>
       </form>
       
-      <div className="sales-filters-card">
-        <div className="sales-filters-row sales-filters-main">
-          <select
-            value={selectedStatus}
-            onChange={(event) => {
-              setSelectedStatus(
-                event.target.value as "all" | "completed" | "cancelled"
-              );
-              setPageNumber(1);
-            }}
-          >
-            <option value="all">All statuses</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-
-          <select
-            value={pageSize}
-            onChange={(event) => {
-              setPageSize(Number(event.target.value));
-              setPageNumber(1);
-            }}
-          >
-            <option value={5}>5 per page</option>
-            <option value={10}>10 per page</option>
-            <option value={20}>20 per page</option>
-            <option value={50}>50 per page</option>
-          </select>
-        </div>
-
-        <div className="sales-filters-row sales-filters-secondary">
-          <input
-            type="date"
-            value={from}
-            onChange={(event) => {
-              setFrom(event.target.value);
-              setPageNumber(1);
-            }}
-          />
-
-          <input
-            type="date"
-            value={to}
-            onChange={(event) => {
-              setTo(event.target.value);
-              setPageNumber(1);
-            }}
-          />
-        </div>
-      </div>
+      <SalesFilters
+        selectedStatus={selectedStatus}
+        from={from}
+        to={to}
+        pageSize={pageSize}
+        onStatusChange={(value) => {
+          setSelectedStatus(value);
+          setPageNumber(1);
+        }}
+        onFromChange={(value) => {
+          setFrom(value);
+          setPageNumber(1);
+        }}
+        onToChange={(value) => {
+          setTo(value);
+          setPageNumber(1);
+        }}
+        onPageSizeChange={(value) => {
+          setPageSize(value);
+          setPageNumber(1);
+        }}
+      />
 
       <div className="results-summary">
         <span>
