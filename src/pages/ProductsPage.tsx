@@ -22,6 +22,10 @@ import { Pagination } from "../components/Pagination";
 import { ProductForm } from "../components/ProductForm";
 import { ProductsFilters } from "../components/ProductsFilters";
 import { ProductsTable } from "../components/ProductsTable";
+import {
+  mapProductStatusToIsActive,
+  type ProductStatusFilter,
+} from "../utils/filterMappers";
 
 
 export function ProductsPage() {
@@ -37,7 +41,7 @@ export function ProductsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
-  const [selectedStatus, setSelectedStatus] = useState<"all" | "active" | "inactive">("all");
+  const [selectedStatus, setSelectedStatus] = useState<ProductStatusFilter>("all");
   const [sortBy, setSortBy] = useState<ProductSortBy>("createdAt");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
@@ -73,10 +77,7 @@ export function ProductsPage() {
       search,
       lowStock,
       categoryId: selectedCategoryId === 0 ? undefined : selectedCategoryId,
-      isActive:
-        selectedStatus === "all"
-          ? undefined
-          : selectedStatus === "active",
+      isActive: mapProductStatusToIsActive(selectedStatus),
       sortBy,
       sortDirection,
     });

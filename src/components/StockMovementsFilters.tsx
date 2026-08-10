@@ -1,14 +1,15 @@
 import type { Product } from "../types/product";
+import type { StockMovementTypeFilter } from "../utils/filterMappers";
 
 interface StockMovementsFiltersProps {
   selectedProductId: number;
-  selectedType: "all" | "in" | "out" | "adjustment";
+  selectedType: StockMovementTypeFilter;
   from: string;
   to: string;
   pageSize: number;
   products: Product[];
   onProductChange: (value: number) => void;
-  onTypeChange: (value: "all" | "in" | "out" | "adjustment") => void;
+  onTypeChange: (value: StockMovementTypeFilter) => void;
   onFromChange: (value: string) => void;
   onToChange: (value: string) => void;
   onPageSizeChange: (value: number) => void;
@@ -47,7 +48,7 @@ export function StockMovementsFilters({
           value={selectedType}
           onChange={(event) =>
             onTypeChange(
-              event.target.value as "all" | "in" | "out" | "adjustment"
+              event.target.value as StockMovementTypeFilter
             )
           }
         >

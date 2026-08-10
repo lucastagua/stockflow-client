@@ -1,10 +1,11 @@
 import type { Category } from "../types/category";
 import type { ProductSortBy, SortDirection } from "../types/product";
+import type { ProductStatusFilter } from "../utils/filterMappers";
 
 interface ProductsFiltersProps {
   search: string;
   selectedCategoryId: number;
-  selectedStatus: "all" | "active" | "inactive";
+  selectedStatus: ProductStatusFilter;
   sortBy: ProductSortBy;
   sortDirection: SortDirection;
   pageSize: number;
@@ -12,7 +13,7 @@ interface ProductsFiltersProps {
   categories: Category[];
   onSearchChange: (value: string) => void;
   onCategoryChange: (value: number) => void;
-  onStatusChange: (value: "all" | "active" | "inactive") => void;
+  onStatusChange: (value: ProductStatusFilter) => void;
   onSortByChange: (value: ProductSortBy) => void;
   onSortDirectionChange: (value: SortDirection) => void;
   onPageSizeChange: (value: number) => void;
@@ -63,7 +64,7 @@ export function ProductsFilters({
           value={selectedStatus}
           onChange={(event) =>
             onStatusChange(
-              event.target.value as "all" | "active" | "inactive"
+              event.target.value as ProductStatusFilter
             )
           }
         >

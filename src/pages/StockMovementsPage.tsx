@@ -16,34 +16,30 @@ import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
 import { StockMovementsFilters } from "../components/StockMovementsFilters";
 import { StockMovementsTable } from "../components/StockMovementsTable";
+import {
+  mapStockMovementTypeToApiType,
+  type StockMovementTypeFilter,
+} from "../utils/filterMappers";
 
 export function StockMovementsPage() {
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-
   const [selectedProductId, setSelectedProductId] = useState(0);
-  const [selectedType, setSelectedType] = useState<
-    "all" | "in" | "out" | "adjustment"
-  >("all");
-
+  const [selectedType, setSelectedType] = useState<StockMovementTypeFilter>("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [newMovement, setNewMovement] = useState({
     productId: 0,
     type: 1 as StockMovementType,
     quantity: 1,
     reason: "",
   });
-
   const [isCreating, setIsCreating] = useState(false);
 
   const fetchMovements = useCallback(async () => {
@@ -53,14 +49,7 @@ export function StockMovementsPage() {
 
       const data = await getStockMovements({
         productId: selectedProductId === 0 ? undefined : selectedProductId,
-        type:
-          selectedType === "all"
-            ? undefined
-            : selectedType === "in"
-            ? 1
-            : selectedType === "out"
-            ? 2
-            : 3,
+        type: mapStockMovementTypeToApiType(selectedType),
         from,
         to,
         pageNumber,

@@ -10,6 +10,10 @@ import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
 import { SalesFilters } from "../components/SalesFilters";
 import { SalesTable } from "../components/SalesTable";
+import {
+  mapSaleStatusToApiStatus,
+  type SaleStatusFilter,
+} from "../utils/filterMappers";
 
 export function SalesPage() {
   const [sales, setSales] = useState<Sale[]>([]);
@@ -17,7 +21,7 @@ export function SalesPage() {
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [selectedStatus, setSelectedStatus] = useState<"all" | "completed" | "cancelled">("all");
+  const [selectedStatus, setSelectedStatus] = useState<SaleStatusFilter>("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -36,12 +40,7 @@ export function SalesPage() {
       setError("");
 
       const data = await getSales({
-        status:
-          selectedStatus === "all"
-            ? undefined
-            : selectedStatus === "completed"
-            ? 1
-            : 2,
+        status: mapSaleStatusToApiStatus(selectedStatus),
         from,
         to,
         pageNumber,

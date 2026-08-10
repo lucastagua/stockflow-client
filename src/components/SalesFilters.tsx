@@ -1,9 +1,11 @@
+import type { SaleStatusFilter } from "../utils/filterMappers";
+
 interface SalesFiltersProps {
-  selectedStatus: "all" | "completed" | "cancelled";
+  selectedStatus: SaleStatusFilter;
   from: string;
   to: string;
   pageSize: number;
-  onStatusChange: (value: "all" | "completed" | "cancelled") => void;
+  onStatusChange: (value: SaleStatusFilter) => void;
   onFromChange: (value: string) => void;
   onToChange: (value: string) => void;
   onPageSizeChange: (value: number) => void;
@@ -26,7 +28,7 @@ export function SalesFilters({
           value={selectedStatus}
           onChange={(event) =>
             onStatusChange(
-              event.target.value as "all" | "completed" | "cancelled"
+              event.target.value as SaleStatusFilter
             )
           }
         >
