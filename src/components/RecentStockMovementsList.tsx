@@ -1,5 +1,6 @@
 import type { RecentStockMovement } from "../types/dashboard";
 import { EmptyState } from "./EmptyState";
+import { formatDate } from "../utils/formatters";
 
 interface RecentStockMovementsListProps {
   movements: RecentStockMovement[];
@@ -30,7 +31,7 @@ export function RecentStockMovementsList({
             <div key={movement.id} className="list-row">
               <div>
                 <strong>{movement.productName}</strong>
-                <p>{new Date(movement.createdAt).toLocaleDateString("es-AR")}</p>
+                <p>{formatDate(movement.createdAt)}</p>
               </div>
 
               <div className="list-row-right">

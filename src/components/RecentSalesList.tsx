@@ -1,5 +1,6 @@
 import type { RecentSale } from "../types/dashboard";
 import { EmptyState } from "../components/EmptyState";
+import { formatCurrencyArs, formatDate } from "../utils/formatters";
 
 interface RecentSalesListProps {
   sales: RecentSale[];
@@ -27,7 +28,7 @@ export function RecentSalesList({ sales }: RecentSalesListProps) {
             <div key={sale.id} className="list-row">
               <div>
                 <strong>Sale #{sale.id}</strong>
-                <p>{new Date(sale.createdAt).toLocaleDateString("es-AR")}</p>
+                <p>{formatDate(sale.createdAt)}</p>
               </div>
 
               <div className="list-row-right">
@@ -42,7 +43,7 @@ export function RecentSalesList({ sales }: RecentSalesListProps) {
                 </span>
 
                 <strong>
-                  ${sale.totalAmountArs.toLocaleString("es-AR")}
+                  {formatCurrencyArs(sale.totalAmountArs)}
                 </strong>
               </div>
             </div>

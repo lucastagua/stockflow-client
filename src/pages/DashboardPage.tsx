@@ -8,6 +8,7 @@ import { RecentStockMovementsList } from "../components/RecentStockMovementsList
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
 import { PageHeader } from "../components/PageHeader";
+import { formatCurrencyArs } from "../utils/formatters";
 
 export function DashboardPage() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -104,7 +105,7 @@ export function DashboardPage() {
 
         <SummaryCard
           title="Revenue"
-          value={`$${summary.totalRevenueArs.toLocaleString("es-AR")}`}
+          value={formatCurrencyArs(summary.totalRevenueArs)}
           description="Completed sales"
           icon={<DollarSign size={22} />}
         />

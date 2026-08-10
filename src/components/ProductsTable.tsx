@@ -1,4 +1,5 @@
 import type { Product } from "../types/product";
+import { formatCurrencyArs, formatCurrencyUsd } from "../utils/formatters";
 
 interface ProductsTableProps {
   products: Product[];
@@ -54,9 +55,9 @@ export function ProductsTable({
                     {product.stock}
                   </span>
                 </td>
-                <td>US$ {product.costUsd.toLocaleString("es-AR")}</td>
+                <td>{formatCurrencyUsd(product.costUsd)}</td>
                 <td>{product.profitMarginPercentage}%</td>
-                <td>${product.priceArs.toLocaleString("es-AR")}</td>
+                <td>{formatCurrencyArs(product.priceArs)}</td>
                 <td>
                   <span
                     className={

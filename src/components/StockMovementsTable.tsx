@@ -2,6 +2,7 @@ import type {
   StockMovement,
   StockMovementType,
 } from "../types/stockMovement";
+import { formatDate } from "../utils/formatters";
 
 interface StockMovementsTableProps {
   movements: StockMovement[];
@@ -49,7 +50,7 @@ export function StockMovementsTable({
             movements.map((movement) => (
               <tr key={movement.id}>
                 <td>
-                  {new Date(movement.createdAt).toLocaleDateString("es-AR")}
+                  {formatDate(movement.createdAt)}
                 </td>
 
                 <td>{movement.productName}</td>

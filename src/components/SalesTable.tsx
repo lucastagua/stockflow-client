@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Sale, SaleStatus } from "../types/sale";
+import { formatCurrencyArs, formatDate } from "../utils/formatters";
 
 interface SalesTableProps {
   sales: Sale[];
@@ -38,8 +39,8 @@ export function SalesTable({ sales, onCancel }: SalesTableProps) {
               <tr key={sale.id}>
                 <td>#{sale.id}</td>
 
-                <td>{new Date(sale.createdAt).toLocaleDateString("es-AR")}</td>
-
+                <td>{formatDate(sale.createdAt)}</td>
+              
                 <td>
                   <div className="items-list">
                     {sale.items.map((item) => (
@@ -50,7 +51,7 @@ export function SalesTable({ sales, onCancel }: SalesTableProps) {
                   </div>
                 </td>
 
-                <td>${sale.totalAmountArs.toLocaleString("es-AR")}</td>
+                <td>{formatCurrencyArs(sale.totalAmountArs)}</td>
 
                 <td>
                   <span

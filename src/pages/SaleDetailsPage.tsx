@@ -6,6 +6,7 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
 import { PageHeader } from "../components/PageHeader";
 import type { Sale, SaleStatus } from "../types/sale";
+import { formatCurrencyArs, formatDateTime } from "../utils/formatters";
 
 function getSaleStatusLabel(status: SaleStatus) {
   if (status === 1) return "Completed";
@@ -83,7 +84,7 @@ export function SaleDetailsPage() {
       <section className="sale-details-summary">
         <div className="summary-card">
           <p className="summary-card-title">Date</p>
-          <h3>{new Date(sale.createdAt).toLocaleString("es-AR")}</h3>
+          <h3>{formatDateTime(sale.createdAt)}</h3>
         </div>
 
         <div className="summary-card">
@@ -105,11 +106,7 @@ export function SaleDetailsPage() {
         <div className="summary-card">
           <p className="summary-card-title">Total</p>
           <h3>
-            $
-            {sale.totalAmountArs.toLocaleString("es-AR", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
+            {formatCurrencyArs(sale.totalAmountArs)}
           </h3>
         </div>
       </section>
@@ -131,18 +128,10 @@ export function SaleDetailsPage() {
                 <td>{item.productName}</td>
                 <td>{item.quantity}</td>
                 <td>
-                  $
-                  {item.unitPriceArs.toLocaleString("es-AR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
+                  {formatCurrencyArs(item.unitPriceArs)}
                 </td>
                 <td>
-                  $
-                  {item.subtotalArs.toLocaleString("es-AR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
+                  {formatCurrencyArs(item.subtotalArs)}
                 </td>
               </tr>
             ))}
@@ -156,11 +145,7 @@ export function SaleDetailsPage() {
 
               <td>
                 <strong>
-                  $
-                  {sale.totalAmountArs.toLocaleString("es-AR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
+                  {formatCurrencyArs(sale.totalAmountArs)}
                 </strong>
               </td>
             </tr>

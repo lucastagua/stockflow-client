@@ -10,6 +10,7 @@ import type { ExchangeRate } from "../types/exchangeRate";
 import { PageHeader } from "../components/PageHeader";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { LoadingState } from "../components/LoadingState";
+import { formatCurrencyArs, formatDateTime } from "../utils/formatters";
 
 export function ExchangeRatesPage() {
   const [rates, setRates] = useState<ExchangeRate[]>([]);
@@ -113,12 +114,12 @@ export function ExchangeRatesPage() {
           <p className="summary-card-title">Latest Exchange Rate</p>
           <h3>
             {latestRate
-              ? `$${latestRate.value.toLocaleString("es-AR")}`
+              ? formatCurrencyArs(latestRate.value)
               : "No rate"}
           </h3>
           <p className="summary-card-description">
             {latestRate
-              ? new Date(latestRate.date).toLocaleString("es-AR")
+              ? formatDateTime(latestRate.date)
               : "No exchange rate registered yet."}
           </p>
         </div>
@@ -186,8 +187,8 @@ export function ExchangeRatesPage() {
                 rates.map((rate) => (
                   <tr key={rate.id}>
                     <td>#{rate.id}</td>
-                    <td>${rate.value.toLocaleString("es-AR")}</td>
-                    <td>{new Date(rate.date).toLocaleString("es-AR")}</td>
+                    <td>{formatCurrencyArs(rate.value)}</td>
+                    <td>{formatDateTime(rate.date)}</td>
                   </tr>
                 ))
               )}
