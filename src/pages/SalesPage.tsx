@@ -14,11 +14,12 @@ import {
   mapSaleStatusToApiStatus,
   type SaleStatusFilter,
 } from "../utils/filterMappers";
+import { DEFAULT_PAGE_SIZE } from "../constants/pagination";
 
 export function SalesPage() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState<SaleStatusFilter>("all");

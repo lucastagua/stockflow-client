@@ -1,4 +1,5 @@
 import type { SaleStatusFilter } from "../utils/filterMappers";
+import { PAGE_SIZE_OPTIONS } from "../constants/pagination";
 
 interface SalesFiltersProps {
   selectedStatus: SaleStatusFilter;
@@ -41,10 +42,11 @@ export function SalesFilters({
           value={pageSize}
           onChange={(event) => onPageSizeChange(Number(event.target.value))}
         >
-          <option value={5}>5 per page</option>
-          <option value={10}>10 per page</option>
-          <option value={20}>20 per page</option>
-          <option value={50}>50 per page</option>
+          {PAGE_SIZE_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option} per page
+            </option>
+          ))}
         </select>
       </div>
 

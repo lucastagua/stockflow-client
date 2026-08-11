@@ -20,12 +20,13 @@ import {
   mapStockMovementTypeToApiType,
   type StockMovementTypeFilter,
 } from "../utils/filterMappers";
+import { DEFAULT_PAGE_SIZE } from "../constants/pagination";
 
 export function StockMovementsPage() {
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedProductId, setSelectedProductId] = useState(0);

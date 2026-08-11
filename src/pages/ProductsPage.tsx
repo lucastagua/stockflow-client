@@ -26,12 +26,12 @@ import {
   mapProductStatusToIsActive,
   type ProductStatusFilter,
 } from "../utils/filterMappers";
-
+import { DEFAULT_PAGE_SIZE } from "../constants/pagination";
 
 export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [search, setSearch] = useState("");

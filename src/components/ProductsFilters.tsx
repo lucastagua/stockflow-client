@@ -1,6 +1,7 @@
 import type { Category } from "../types/category";
 import type { ProductSortBy, SortDirection } from "../types/product";
 import type { ProductStatusFilter } from "../utils/filterMappers";
+import { PAGE_SIZE_OPTIONS } from "../constants/pagination";
 
 interface ProductsFiltersProps {
   search: string;
@@ -101,10 +102,11 @@ export function ProductsFilters({
           value={pageSize}
           onChange={(event) => onPageSizeChange(Number(event.target.value))}
         >
-          <option value={5}>5 per page</option>
-          <option value={10}>10 per page</option>
-          <option value={20}>20 per page</option>
-          <option value={50}>50 per page</option>
+          {PAGE_SIZE_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option} per page
+            </option>
+          ))}
         </select>
 
         <label className="checkbox-label products-low-stock-filter">
