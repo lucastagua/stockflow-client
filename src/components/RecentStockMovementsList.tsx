@@ -1,17 +1,13 @@
 import type { RecentStockMovement } from "../types/dashboard";
 import { EmptyState } from "./EmptyState";
 import { formatDate } from "../utils/formatters";
+import {
+  getStockMovementTypeBadgeClass,
+  getStockMovementTypeLabel,
+} from "../utils/statusHelpers";
 
 interface RecentStockMovementsListProps {
   movements: RecentStockMovement[];
-}
-
-function getMovementTypeLabel(type: number) {
-  if (type === 1) return "In";
-  if (type === 2) return "Out";
-  if (type === 3) return "Adjustment";
-
-  return "Unknown";
 }
 
 export function RecentStockMovementsList({
@@ -35,18 +31,11 @@ export function RecentStockMovementsList({
               </div>
 
               <div className="list-row-right">
-                <span
-                  className={
-                    movement.type === 1
-                      ? "badge badge-success"
-                      : movement.type === 2
-                      ? "badge badge-warning"
-                      : "badge badge-muted"
-                  }
-                >
-                  {getMovementTypeLabel(movement.type)}
-                </span>
 
+                <span className={getStockMovementTypeBadgeClass(movement.type)}>
+                  {getStockMovementTypeLabel(movement.type)}
+                </span>
+                
                 <strong>
                   {movement.previousStock} → {movement.newStock}
                 </strong>

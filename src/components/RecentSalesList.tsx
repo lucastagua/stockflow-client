@@ -1,16 +1,13 @@
 import type { RecentSale } from "../types/dashboard";
 import { EmptyState } from "../components/EmptyState";
 import { formatCurrencyArs, formatDate } from "../utils/formatters";
+import {
+  getSaleStatusBadgeClass,
+  getSaleStatusLabel,
+} from "../utils/statusHelpers";
 
 interface RecentSalesListProps {
   sales: RecentSale[];
-}
-
-function getSaleStatusLabel(status: number) {
-  if (status === 1) return "Completed";
-  if (status === 2) return "Cancelled";
-
-  return "Unknown";
 }
 
 export function RecentSalesList({ sales }: RecentSalesListProps) {
@@ -32,13 +29,7 @@ export function RecentSalesList({ sales }: RecentSalesListProps) {
               </div>
 
               <div className="list-row-right">
-                <span
-                  className={
-                    sale.status === 1
-                      ? "badge badge-success"
-                      : "badge badge-muted"
-                  }
-                >
+                <span className={getSaleStatusBadgeClass(sale.status)}>
                   {getSaleStatusLabel(sale.status)}
                 </span>
 

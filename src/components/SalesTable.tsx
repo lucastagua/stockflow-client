@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
-import type { Sale, SaleStatus } from "../types/sale";
+import type { Sale } from "../types/sale";
 import { formatCurrencyArs, formatDate } from "../utils/formatters";
+import {
+  getSaleStatusBadgeClass,
+  getSaleStatusLabel,
+} from "../utils/statusHelpers";
 
 interface SalesTableProps {
   sales: Sale[];
   onCancel: (saleId: number) => void;
-}
-
-function getSaleStatusLabel(status: SaleStatus) {
-  if (status === 1) return "Completed";
-  if (status === 2) return "Cancelled";
-
-  return "Unknown";
 }
 
 export function SalesTable({ sales, onCancel }: SalesTableProps) {
@@ -54,13 +51,7 @@ export function SalesTable({ sales, onCancel }: SalesTableProps) {
                 <td>{formatCurrencyArs(sale.totalAmountArs)}</td>
 
                 <td>
-                  <span
-                    className={
-                      sale.status === 1
-                        ? "badge badge-success"
-                        : "badge badge-muted"
-                    }
-                  >
+                  <span className={getSaleStatusBadgeClass(sale.status)}>
                     {getSaleStatusLabel(sale.status)}
                   </span>
                 </td>

@@ -1,26 +1,12 @@
-import type {
-  StockMovement,
-  StockMovementType,
-} from "../types/stockMovement";
+import type { StockMovement } from "../types/stockMovement";
 import { formatDate } from "../utils/formatters";
+import {
+  getStockMovementTypeBadgeClass,
+  getStockMovementTypeLabel,
+} from "../utils/statusHelpers";
 
 interface StockMovementsTableProps {
   movements: StockMovement[];
-}
-
-function getMovementTypeLabel(type: StockMovementType) {
-  if (type === 1) return "In";
-  if (type === 2) return "Out";
-  if (type === 3) return "Adjustment";
-
-  return "Unknown";
-}
-
-function getMovementBadgeClass(type: StockMovementType) {
-  if (type === 1) return "badge badge-success";
-  if (type === 2) return "badge badge-warning";
-
-  return "badge badge-muted";
 }
 
 export function StockMovementsTable({
@@ -56,8 +42,8 @@ export function StockMovementsTable({
                 <td>{movement.productName}</td>
 
                 <td>
-                  <span className={getMovementBadgeClass(movement.type)}>
-                    {getMovementTypeLabel(movement.type)}
+                  <span className={getStockMovementTypeBadgeClass(movement.type)}>
+                    {getStockMovementTypeLabel(movement.type)}
                   </span>
                 </td>
 

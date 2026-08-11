@@ -1,14 +1,17 @@
+import type { SaleStatus } from "./sale";
+import type { StockMovementType } from "./stockMovement";
+
 export interface RecentSale {
   id: number;
   createdAt: string;
   totalAmountArs: number;
-  status: number;
+  status: SaleStatus;
 }
 
 export interface RecentStockMovement {
   id: number;
   productName: string;
-  type: number;
+  type: StockMovementType;
   quantity: number;
   previousStock: number;
   newStock: number;
