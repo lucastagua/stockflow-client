@@ -21,6 +21,7 @@ import {
   type StockMovementTypeFilter,
 } from "../utils/filterMappers";
 import { DEFAULT_PAGE_SIZE } from "../constants/pagination";
+import { CreateStockMovementForm } from "../components/CreateStockMovementForm";
 
 export function StockMovementsPage() {
   const [movements, setMovements] = useState<StockMovement[]>([]);
@@ -147,83 +148,13 @@ export function StockMovementsPage() {
         description="Review stock entries, exits and manual adjustments."
       />
 
-      <form className="form-card" onSubmit={handleCreateStockMovement}>
-        <h2>Create Stock Movement</h2>
-
-        <div className="form-grid form-grid-stock-movement">
-          <label className="form-field">
-            <span>Product</span>
-            <select
-              value={newMovement.productId}
-              onChange={(event) =>
-                setNewMovement({
-                  ...newMovement,
-                  productId: Number(event.target.value),
-                })
-              }
-            >
-              <option value={0}>Select product</option>
-
-              {products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.name} - Current stock: {product.stock}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="form-field">
-            <span>Type</span>
-            <select
-              value={newMovement.type}
-              onChange={(event) =>
-                setNewMovement({
-                  ...newMovement,
-                  type: Number(event.target.value) as StockMovementType,
-                })
-              }
-            >
-              <option value={1}>In</option>
-              <option value={2}>Out</option>
-              <option value={3}>Adjustment</option>
-            </select>
-          </label>
-
-          <label className="form-field">
-            <span>Quantity</span>
-            <input
-              type="number"
-              min="1"
-              value={newMovement.quantity}
-              onChange={(event) =>
-                setNewMovement({
-                  ...newMovement,
-                  quantity: Number(event.target.value),
-                })
-              }
-            />
-          </label>
-
-          <label className="form-field">
-            <span>Reason</span>
-            <input
-              type="text"
-              placeholder="Example: Supplier purchase"
-              value={newMovement.reason}
-              onChange={(event) =>
-                setNewMovement({
-                  ...newMovement,
-                  reason: event.target.value,
-                })
-              }
-            />
-          </label>
-        </div>
-
-        <button className="button button-primary" type="submit" disabled={isCreating}>
-          {isCreating ? "Creating..." : "Create Movement"}
-        </button>
-      </form>
+      <CreateStockMovementForm
+        products={products}
+        values={newMovement}
+        isCreating={isCreating}
+        onChange={setNewMovement}
+        onSubmit={handleCreateStockMovement}
+      />
 
       <StockMovementsFilters
         selectedProductId={selectedProductId}
