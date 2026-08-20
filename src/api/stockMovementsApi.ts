@@ -1,10 +1,10 @@
 import { axiosClient } from "./axiosClient";
 import type {
   CreateStockMovementRequest,
-  PagedResponse,
   StockMovement,
   StockMovementFilters,
 } from "../types/stockMovement";
+import type { PagedResponse } from "../types/pagination";
 
 export async function createStockMovement(movement: CreateStockMovementRequest) {
   const response = await axiosClient.post<StockMovement>(

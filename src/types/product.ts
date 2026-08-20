@@ -14,14 +14,6 @@ export interface Product {
   categoryName: string;
 }
 
-export interface PagedResponse<T> {
-  pageNumber: number;
-  pageSize: number;
-  totalRecords: number;
-  totalPages: number;
-  data: T[];
-}
-
 export interface ProductFilters {
   pageNumber: number;
   pageSize: number;

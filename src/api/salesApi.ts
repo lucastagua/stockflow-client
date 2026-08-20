@@ -1,10 +1,10 @@
 import { axiosClient } from "./axiosClient";
 import type {
   CreateSaleRequest,
-  PagedResponse,
   Sale,
   SaleFilters,
 } from "../types/sale";
+import type { PagedResponse } from "../types/pagination";
 
 export async function createSale(sale: CreateSaleRequest) {
   const response = await axiosClient.post<Sale>("/Sales", sale);

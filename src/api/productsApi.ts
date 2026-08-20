@@ -1,11 +1,11 @@
 import { axiosClient } from "./axiosClient";
 import type {
   CreateProductRequest,
-  PagedResponse,
   Product,
   ProductFilters,
   UpdateProductRequest,
 } from "../types/product";
+import type { PagedResponse } from "../types/pagination";
 import type { RecalculatePricesResponse } from "../types/exchangeRate";
 
 export async function recalculateProductPrices() {

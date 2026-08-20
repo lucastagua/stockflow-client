@@ -12,14 +12,6 @@ export interface StockMovement {
   createdAt: string;
 }
 
-export interface PagedResponse<T> {
-  pageNumber: number;
-  pageSize: number;
-  totalRecords: number;
-  totalPages: number;
-  data: T[];
-}
-
 export interface StockMovementFilters {
   productId?: number;
   type?: StockMovementType;
