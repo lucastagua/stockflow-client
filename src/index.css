@@ -519,6 +519,15 @@ td {
   .sale-details-summary {
   grid-template-columns: 1fr;
   }
+
+  .stock-movements-filters-actions {
+  justify-content: stretch;
+  }
+
+  .stock-movements-filters-actions .button {
+    width: 100%;
+  }
+  
 }
 
 .loading-state {
@@ -641,7 +650,7 @@ table tfoot td {
 }
 
 .products-filters-secondary {
-  grid-template-columns: repeat(3, minmax(170px, 1fr)) minmax(140px, auto);
+  grid-template-columns: repeat(3, minmax(170px, 1fr)) minmax(140px, auto) minmax(130px, auto);
   align-items: center;
 }
 
@@ -681,6 +690,13 @@ table tfoot td {
   .products-filters-main,
   .products-filters-secondary {
     grid-template-columns: 1fr;
+  }
+  .sales-filters-actions {
+  justify-content: stretch;
+  }
+
+  .sales-filters-actions .button {
+    width: 100%;
   }
 }
 
@@ -768,4 +784,16 @@ table tfoot td {
   .form-grid-compact {
     grid-template-columns: 1fr;
   }
+}
+
+.sales-filters-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.stock-movements-filters-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
 }

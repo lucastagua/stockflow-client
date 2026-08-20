@@ -3,6 +3,7 @@ import type { StockMovementTypeFilter } from "../utils/filterMappers";
 import { PAGE_SIZE_OPTIONS } from "../constants/pagination";
 
 interface StockMovementsFiltersProps {
+  onClearFilters: () => void;
   selectedProductId: number;
   selectedType: StockMovementTypeFilter;
   from: string;
@@ -17,6 +18,7 @@ interface StockMovementsFiltersProps {
 }
 
 export function StockMovementsFilters({
+  onClearFilters,
   selectedProductId,
   selectedType,
   from,
@@ -29,6 +31,7 @@ export function StockMovementsFilters({
   onToChange,
   onPageSizeChange,
 }: StockMovementsFiltersProps) {
+
   return (
     <div className="stock-movements-filters-card">
       <div className="stock-movements-filters-row stock-movements-filters-main">
@@ -84,6 +87,17 @@ export function StockMovementsFilters({
           ))}
         </select>
       </div>
+      
+      <div className="stock-movements-filters-actions">
+        <button
+          type="button"
+          className="button button-secondary"
+          onClick={onClearFilters}
+        >
+          Clear filters
+        </button>
+      </div>
+
     </div>
   );
 }

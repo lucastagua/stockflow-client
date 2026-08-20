@@ -19,6 +19,7 @@ interface ProductsFiltersProps {
   onSortDirectionChange: (value: SortDirection) => void;
   onPageSizeChange: (value: number) => void;
   onLowStockChange: (value: boolean) => void;
+  onClearFilters: () => void;
 }
 
 export function ProductsFilters({
@@ -37,7 +38,9 @@ export function ProductsFilters({
   onSortDirectionChange,
   onPageSizeChange,
   onLowStockChange,
+  onClearFilters,
 }: ProductsFiltersProps) {
+
   return (
     <div className="products-filters-card">
       <div className="products-filters-row products-filters-main">
@@ -117,6 +120,15 @@ export function ProductsFilters({
           />
           Low stock only
         </label>
+
+        <button
+          type="button"
+          className="button button-secondary"
+          onClick={onClearFilters}
+        >
+          Clear filters
+        </button> 
+
       </div>
     </div>
   );

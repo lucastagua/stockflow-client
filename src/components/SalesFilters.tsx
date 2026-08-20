@@ -2,6 +2,7 @@ import type { SaleStatusFilter } from "../utils/filterMappers";
 import { PAGE_SIZE_OPTIONS } from "../constants/pagination";
 
 interface SalesFiltersProps {
+  onClearFilters: () => void;
   selectedStatus: SaleStatusFilter;
   from: string;
   to: string;
@@ -13,6 +14,7 @@ interface SalesFiltersProps {
 }
 
 export function SalesFilters({
+  onClearFilters,
   selectedStatus,
   from,
   to,
@@ -22,6 +24,7 @@ export function SalesFilters({
   onToChange,
   onPageSizeChange,
 }: SalesFiltersProps) {
+
   return (
     <div className="sales-filters-card">
       <div className="sales-filters-row sales-filters-main">
@@ -63,6 +66,17 @@ export function SalesFilters({
           onChange={(event) => onToChange(event.target.value)}
         />
       </div>
+
+      <div className="sales-filters-actions">
+        <button
+          type="button"
+          className="button button-secondary"
+          onClick={onClearFilters}
+        >
+          Clear filters
+        </button>
+      </div>
+      
     </div>
   );
 }

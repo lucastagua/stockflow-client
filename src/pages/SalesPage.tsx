@@ -234,6 +234,13 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
           setPageSize(value);
           setPageNumber(1);
         }}
+        onClearFilters={() => {
+          setSelectedStatus("all");
+          setFrom("");
+          setTo("");
+          setPageSize(DEFAULT_PAGE_SIZE);
+          setPageNumber(1);
+        }}
       />
 
       <div className="results-summary">

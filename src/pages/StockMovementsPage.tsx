@@ -183,6 +183,14 @@ export function StockMovementsPage() {
           setPageSize(value);
           setPageNumber(1);
         }}
+        onClearFilters={() => {
+          setSelectedProductId(0);
+          setSelectedType("all");
+          setFrom("");
+          setTo("");
+          setPageSize(DEFAULT_PAGE_SIZE);
+          setPageNumber(1);
+        }}
       />
 
       <div className="results-summary">

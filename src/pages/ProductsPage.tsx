@@ -316,6 +316,16 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
           setLowStock(value);
           setPageNumber(1);
         }}
+        onClearFilters={() => {
+          setSearch("");
+          setSelectedCategoryId(0);
+          setSelectedStatus("all");
+          setSortBy("createdAt");
+          setSortDirection("desc");
+          setPageSize(DEFAULT_PAGE_SIZE);
+          setLowStock(false);
+          setPageNumber(1);
+        }}
       />
 
       <div className="results-summary">
