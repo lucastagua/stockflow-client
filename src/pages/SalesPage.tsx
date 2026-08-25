@@ -10,6 +10,7 @@ import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
 import { SalesFilters } from "../components/SalesFilters";
 import { SalesTable } from "../components/SalesTable";
+import { ResultsSummary } from "../components/ResultsSummary";
 import {
   mapSaleStatusToApiStatus,
   type SaleStatusFilter,
@@ -250,13 +251,11 @@ const hasActiveFilters =
         }}
       />
 
-      <div className="results-summary">
-        <span>
-          {totalRecords === 1
-            ? "1 sale found"
-            : `${totalRecords} sales found`}
-        </span>
-      </div>
+      <ResultsSummary
+        totalRecords={totalRecords}
+        singularLabel="sale"
+        pluralLabel="sales"
+      />
 
       <ErrorMessage message={error} />
 

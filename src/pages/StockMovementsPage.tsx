@@ -16,6 +16,7 @@ import { LoadingState } from "../components/LoadingState";
 import { Pagination } from "../components/Pagination";
 import { StockMovementsFilters } from "../components/StockMovementsFilters";
 import { StockMovementsTable } from "../components/StockMovementsTable";
+import { ResultsSummary } from "../components/ResultsSummary";
 import {
   mapStockMovementTypeToApiType,
   type StockMovementTypeFilter,
@@ -201,13 +202,11 @@ const hasActiveFilters =
         }}
       />
 
-      <div className="results-summary">
-        <span>
-          {totalRecords === 1
-            ? "1 movement found"
-            : `${totalRecords} movements found`}
-        </span>
-      </div>
+      <ResultsSummary
+        totalRecords={totalRecords}
+        singularLabel="movement"
+        pluralLabel="movements"
+      />
 
         <ErrorMessage message={error} />
 

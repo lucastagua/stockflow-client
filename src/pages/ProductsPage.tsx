@@ -22,6 +22,7 @@ import { Pagination } from "../components/Pagination";
 import { ProductForm } from "../components/ProductForm";
 import { ProductsFilters } from "../components/ProductsFilters";
 import { ProductsTable } from "../components/ProductsTable";
+import { ResultsSummary } from "../components/ResultsSummary";
 import {
   mapProductStatusToIsActive,
   type ProductStatusFilter,
@@ -338,13 +339,11 @@ const hasActiveFilters =
         }}
       />
 
-      <div className="results-summary">
-        <span>
-          {totalRecords === 1
-            ? "1 product found"
-            : `${totalRecords} products found`}
-        </span>
-      </div>
+      <ResultsSummary
+        totalRecords={totalRecords}
+        singularLabel="product"
+        pluralLabel="products"
+      />
 
       <ErrorMessage message={error} /> 
 
