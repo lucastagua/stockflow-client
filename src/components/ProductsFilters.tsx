@@ -12,6 +12,7 @@ interface ProductsFiltersProps {
   pageSize: number;
   lowStock: boolean;
   categories: Category[];
+  hasActiveFilters: boolean;
   onSearchChange: (value: string) => void;
   onCategoryChange: (value: number) => void;
   onStatusChange: (value: ProductStatusFilter) => void;
@@ -31,6 +32,7 @@ export function ProductsFilters({
   pageSize,
   lowStock,
   categories,
+  hasActiveFilters,
   onSearchChange,
   onCategoryChange,
   onStatusChange,
@@ -43,6 +45,13 @@ export function ProductsFilters({
 
   return (
     <div className="products-filters-card">
+      <div className="filters-card-header">
+        <span>Filters</span>
+
+        {hasActiveFilters && (
+          <span className="badge badge-warning">Filters active</span>
+        )}
+      </div>
       <div className="products-filters-row products-filters-main">
         <input
           type="text"

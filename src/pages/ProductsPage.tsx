@@ -249,6 +249,15 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
   }
 }
 
+const hasActiveFilters =
+  search.trim() !== "" ||
+  selectedCategoryId !== 0 ||
+  selectedStatus !== "all" ||
+  sortBy !== "createdAt" ||
+  sortDirection !== "desc" ||
+  pageSize !== DEFAULT_PAGE_SIZE ||
+  lowStock;
+
   return (
     <div>
       <PageHeader
@@ -288,6 +297,7 @@ async function handleUpdateProduct(event: React.FormEvent<HTMLFormElement>) {
         pageSize={pageSize}
         lowStock={lowStock}
         categories={categories}
+        hasActiveFilters={hasActiveFilters}
         onSearchChange={(value) => {
           setSearch(value);
           setPageNumber(1);

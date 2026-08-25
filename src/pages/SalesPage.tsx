@@ -193,6 +193,12 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
   }
 }
 
+const hasActiveFilters =
+  selectedStatus !== "all" ||
+  from !== "" ||
+  to !== "" ||
+  pageSize !== DEFAULT_PAGE_SIZE;
+
   return (
     <div>
       <PageHeader
@@ -218,6 +224,7 @@ async function handleCreateSale(event: React.FormEvent<HTMLFormElement>) {
         from={from}
         to={to}
         pageSize={pageSize}
+        hasActiveFilters={hasActiveFilters}
         onStatusChange={(value) => {
           setSelectedStatus(value);
           setPageNumber(1);

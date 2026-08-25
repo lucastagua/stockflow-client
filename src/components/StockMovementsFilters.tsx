@@ -10,6 +10,7 @@ interface StockMovementsFiltersProps {
   to: string;
   pageSize: number;
   products: Product[];
+  hasActiveFilters: boolean;
   onProductChange: (value: number) => void;
   onTypeChange: (value: StockMovementTypeFilter) => void;
   onFromChange: (value: string) => void;
@@ -25,6 +26,7 @@ export function StockMovementsFilters({
   to,
   pageSize,
   products,
+  hasActiveFilters,
   onProductChange,
   onTypeChange,
   onFromChange,
@@ -34,6 +36,13 @@ export function StockMovementsFilters({
 
   return (
     <div className="stock-movements-filters-card">
+      <div className="filters-card-header">
+        <span>Filters</span>
+
+        {hasActiveFilters && (
+          <span className="badge badge-warning">Filters active</span>
+        )}
+      </div>
       <div className="stock-movements-filters-row stock-movements-filters-main">
         <select
           value={selectedProductId}

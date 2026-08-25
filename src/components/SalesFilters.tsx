@@ -7,6 +7,7 @@ interface SalesFiltersProps {
   from: string;
   to: string;
   pageSize: number;
+  hasActiveFilters: boolean;
   onStatusChange: (value: SaleStatusFilter) => void;
   onFromChange: (value: string) => void;
   onToChange: (value: string) => void;
@@ -19,6 +20,7 @@ export function SalesFilters({
   from,
   to,
   pageSize,
+  hasActiveFilters,
   onStatusChange,
   onFromChange,
   onToChange,
@@ -27,6 +29,13 @@ export function SalesFilters({
 
   return (
     <div className="sales-filters-card">
+      <div className="filters-card-header">
+        <span>Filters</span>
+
+        {hasActiveFilters && (
+          <span className="badge badge-warning">Filters active</span>
+        )}
+      </div>
       <div className="sales-filters-row sales-filters-main">
         <select
           value={selectedStatus}

@@ -141,6 +141,13 @@ export function StockMovementsPage() {
   }
 }
 
+const hasActiveFilters =
+  selectedProductId !== 0 ||
+  selectedType !== "all" ||
+  from !== "" ||
+  to !== "" ||
+  pageSize !== DEFAULT_PAGE_SIZE;
+
   return (
     <div>
       <PageHeader
@@ -163,6 +170,7 @@ export function StockMovementsPage() {
         to={to}
         pageSize={pageSize}
         products={products}
+        hasActiveFilters={hasActiveFilters}
         onProductChange={(value) => {
           setSelectedProductId(value);
           setPageNumber(1);

@@ -797,3 +797,14 @@ table tfoot td {
   justify-content: flex-end;
   margin-top: 12px;
 }
+
+.filters-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
